@@ -1,8 +1,10 @@
-package com.example.musicplayer;
+package com.example.musicplayer.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.musicplayer.R;
 
 public class MainActivity extends AppCompatActivity {
 
