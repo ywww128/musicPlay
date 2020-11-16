@@ -1,10 +1,10 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="XUITheme.Phone">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/xui_config_color_main_theme</item>
+        <item name="colorPrimaryDark">@color/xui_config_color_main_theme</item>
+        <item name="colorAccent">@color/xui_config_color_main_theme</item>
     </style>
 
 </resources>
