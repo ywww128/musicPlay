@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/test1"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/test2"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/riv1"
+            android:clickable="true"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/keqing"
+            app:riv_border_color="@color/xui_config_color_gray_6"
+            app:riv_border_width="0px"
+            app:riv_is_circle="true"
+            app:riv_selected_border_color="@color/xui_config_color_gray_4"
+            app:riv_selected_border_width="1px"
+            app:riv_selected_mask_color="@color/xui_config_color_gray_8"/>
+    </RelativeLayout>
 </LinearLayout>
