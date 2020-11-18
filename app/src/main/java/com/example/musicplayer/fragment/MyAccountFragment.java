@@ -1,4 +1,4 @@
-package com.example.musicplayer;
+package com.example.musicplayer.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,14 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.musicplayer.R;
+
 /**
  * @author ywww
- * @date 2020-11-16 21:31
+ * @date 2020-11-17 23:33
  */
-public class MyMusicFragment extends Fragment {
+public class MyAccountFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_my_music,null);
+        return inflater.inflate(R.layout.fragment_my_account,null);
     }
 }

@@ -7,4 +7,28 @@
         <item name="colorAccent">@color/xui_config_color_main_theme</item>
     </style>
 
+    <!--歌单封面图片-->
+    <style name="song_cover_pictures">
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="riv_border_color">@color/xui_config_color_gray_6</item>
+        <item name="riv_border_width">1dp</item>
+        <item name="riv_selected_border_color">@color/xui_config_color_gray_4</item>
+        <item name="riv_selected_border_width">1dp</item>
+        <item name="riv_corner_radius">10dp</item>
+        <item name="riv_selected_mask_color">@color/xui_config_color_gray_8</item>
+    </style>
+
+    <!--歌单点击量-->
+    <style name="clicks_song_cover">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">#EFE8E8</item>
+    </style>
+
 </resources>

@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorRed">#d20000</color>
+    <color name="defaultTextColor">#8A000000</color>
+    <color name="pressTextColor">#AA5E5555</color>
 </resources>
