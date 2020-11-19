@@ -39,15 +39,15 @@
         android:paddingLeft="63dp">
 
 
-        <ImageView
-            android:id="@+id/song_playing_love"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:adjustViewBounds="true"
-            android:maxWidth="30dp"
-            android:maxHeight="30dp"
-            android:src="@drawable/song_playing_love_black" />
+            <com.xuexiang.xui.widget.button.shinebutton.ShineButton
+                android:id="@+id/song_playing_love"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="20dp"
+                app:sb_checked_color="#f26d7d"
+                app:sb_icon_image="@drawable/song_playing_love_black"
+                app:sb_normal_color="@android:color/darker_gray" />
+
 
         <ImageView
             android:layout_width="wrap_content"
@@ -98,13 +98,24 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"  />
 
-    <com.rey.material.widget.Slider
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        app:sl_maxValue="100"
-        app:sl_minValue="0"
-        app:sl_value="50" />
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_music_current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"/>
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seek_bar_song_progress"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_music_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -133,6 +144,7 @@
             android:src="@drawable/song_playing_back" />
 
         <ImageView
+            android:id="@+id/iv_play_music"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
