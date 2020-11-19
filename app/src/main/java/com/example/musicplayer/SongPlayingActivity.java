@@ -33,7 +33,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @author zjw
  * https://www.zybuluo.com/tianyu-211/note/612033
  */
-public class SongPlayingActivity extends AppCompatActivity {
+public class SongPlayingActivity extends AppCompatActivity implements
+        MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnPreparedListener {
     private MusicInfo musicInfo;        // 音乐信息
 
     private TitleBar titleBarReturn;    // 返回
@@ -78,15 +79,13 @@ public class SongPlayingActivity extends AppCompatActivity {
         ivPlayMusic.setOnClickListener(new MClick());
 
         // 音乐播放器调用，以及音乐信息
-//        mediaPlayer = MediaPlayer.create(this, R.raw.nuannuan);
-        try{
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);//设置媒体流类型，根据播放类型分配内存
-            mediaPlayer.setDataSource(this, Uri.parse("http://m8.music.126.net/20201119224251/0371334ee8c664b30e8393b648fa5cf8/ymusic/372f/110c/5c40/a76ca4b544fe747a0a8604368b235da9.mp3"));
-
-        } catch(Exception e) {
-
-        }
+        mediaPlayer = MediaPlayer.create(this, R.raw.nuannuan);
+//        try{
+//            mediaPlayer.setDataSource("http://www.ytmp3.cn/down/57799.mp3");
+//            mediaPlayer.prepareAsync();
+//        } catch(Exception e) {
+//
+//        }
 
         mediaPlayer.seekTo(0);
         musicInfo = new MusicInfo();
@@ -155,45 +154,6 @@ public class SongPlayingActivity extends AppCompatActivity {
         });
     }
 
-    public void hello(View view) {
-        try {
-            //1.初始化mediaPlayer
-            mediaPlayer = new MediaPlayer();
-            //2.设置播放器的一些初始化参数
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);//设置媒体流类型，根据播放类型分配内存
-            mediaPlayer.setDataSource(this, Uri.parse("http://m8.music.126.net/20201119224251/0371334ee8c664b30e8393b648fa5cf8/ymusic/372f/110c/5c40/a76ca4b544fe747a0a8604368b235da9.mp3"));//这里可以设置播放网络音乐
-            //3.准备播放音乐
-            /**
-             * 本地音频
-             * mediaPlayer.prepare();
-             * 在主线程准备播放，如果主线程不执行完毕，下面就不执行
-             * 所以如果播放网络音乐，准备的时间过长
-             * 就容易出现 ANR （application not respond）程序无响应
-             */
-            /**
-             * 网络音频
-             * mediaPlayer.prepareAsync();
-             * 是指在子线程准备播放,即使子线程不执行完毕，也会执行下一步
-             * 这样造成的问题就是，如果音乐没有下载完毕，那么仍然执行下一步
-             * 导致音乐无法播放
-             */
-            mediaPlayer.prepareAsync();
-            /**
-             * 所以设置一个setOnPreparedListener
-             * 设置一个监听器
-             */
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                //一旦监听器准备好，就调用onPrepared方法
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    //4.播放音乐
-                    mediaPlayer.start();
-                }
-            });
-        } catch (IOException e) {
-            Toast.makeText(this,"音乐无法播放",Toast.LENGTH_SHORT).show();
-        }
-    }
 
     /**
      * 图片旋转效果初始化
@@ -208,6 +168,16 @@ public class SongPlayingActivity extends AppCompatActivity {
         rotationAnimator.setInterpolator(new LinearInterpolator());    // 匀速
         rotationAnimator.start();  // 开始旋转动画
         rotationAnimator.pause();  // 暂停旋转动画
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        tvMusicCurrentTime.setText("" + percent + "%");
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        Toast.makeText(this, "onPrepared called", Toast.LENGTH_SHORT).show();
     }
 
     private class MClick implements View.OnClickListener {
