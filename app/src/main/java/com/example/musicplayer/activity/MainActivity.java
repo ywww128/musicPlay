@@ -15,6 +15,7 @@ import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.IndexFragment;
 import com.example.musicplayer.fragment.MyAccountFragment;
 import com.example.musicplayer.fragment.MyMusicFragment;
+import com.example.musicplayer.valley.SongsMessageObtain;
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private IndexFragment indexFragment;
     private MyMusicFragment myMusicFragment;
     private MyAccountFragment myAccountFragment;
+    private SongsMessageObtain songsMessageObtain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         fManager = getSupportFragmentManager();
         initSearchView();
         setMainTabClick(mainTab1);
+        songsMessageObtain = new SongsMessageObtain(this,"刚刚好");
+        songsMessageObtain.startGetJson();
     }
 
     public void initView(){
