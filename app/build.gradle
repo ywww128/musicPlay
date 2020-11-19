@@ -20,12 +20,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -36,4 +41,16 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+
+    implementation 'androidx.appcompat:appcompat:1.0.0'                 //必须 1.0.0 以上
+
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
+    implementation  'com.scwang.smart:refresh-header-classics:2.0.1'    //经典刷新头
+    implementation  'com.scwang.smart:refresh-header-radar:2.0.1'       //雷达刷新头
+    implementation  'com.scwang.smart:refresh-header-falsify:2.0.1'     //虚拟刷新头
+    implementation  'com.scwang.smart:refresh-header-material:2.0.1'    //谷歌刷新头
+    implementation  'com.scwang.smart:refresh-header-two-level:2.0.1'   //二级刷新头
+    implementation  'com.scwang.smart:refresh-footer-ball:2.0.1'        //球脉冲加载
+    implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'    //经典加载
 }
