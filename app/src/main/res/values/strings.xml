@@ -2,4 +2,10 @@
     <string name="app_name">MusicPlayer</string>
     <string name="test1">test1</string>
     <string name="test2">test2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_comment">说点什么吧</string>
+    <string name="comment">评论</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
 </resources>
