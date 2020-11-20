@@ -6,9 +6,7 @@ import androidx.appcompat.widget.AppCompatSeekBar;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,11 +21,11 @@ import com.example.musicplayer.util.MusicUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
 
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.wcy.lrcview.LrcView;
 
 /**
  * @author zjw
@@ -59,6 +57,8 @@ public class SongPlayingActivity extends AppCompatActivity implements
     private TextView tvMusicCurrentTime;    // 音乐播放时长
     private TextView tvMusicTotalTime;      // 音乐总时长
 
+    private LrcView lrcView;  // 歌词框
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +69,7 @@ public class SongPlayingActivity extends AppCompatActivity implements
     }
 
     private void initView() {
-        ivLove  = findViewById(R.id.song_playing_love);
+        ivLove  = findViewById(R.id.shine_button_love);
         ivLove.setOnClickListener(new MClick());
         ivListeningMode = findViewById(R.id.iv_listening_mode);
         ivListeningMode.setOnClickListener(new MClick());
@@ -79,7 +79,7 @@ public class SongPlayingActivity extends AppCompatActivity implements
         ivPlayMusic.setOnClickListener(new MClick());
 
         // 音乐播放器调用，以及音乐信息
-        mediaPlayer = MediaPlayer.create(this, R.raw.nuannuan);
+        mediaPlayer = MediaPlayer.create(this, R.raw.wenquan);
 //        try{
 //            mediaPlayer.setDataSource("http://www.ytmp3.cn/down/57799.mp3");
 //            mediaPlayer.prepareAsync();
@@ -154,6 +154,11 @@ public class SongPlayingActivity extends AppCompatActivity implements
         });
     }
 
+//    private void initLrcView() {
+//        lrcView = findViewById(R.id.lrc_view);
+//        lrcView.loadLrc(R.raw.);
+//    }
+
 
     /**
      * 图片旋转效果初始化
@@ -186,7 +191,7 @@ public class SongPlayingActivity extends AppCompatActivity implements
         @Override
         public void onClick(View v) {
             switch(v.getId()) {
-                case R.id.song_playing_love:    // 是否喜欢歌曲的切换
+                case R.id.shine_button_love:    // 是否喜欢歌曲的切换
                     ivLove.setImageDrawable(getResources().getDrawable(R.drawable.song_playing_love_red));
                     break;
                 case R.id.iv_listening_mode:    // 播放模式的切换
@@ -212,6 +217,15 @@ public class SongPlayingActivity extends AppCompatActivity implements
                     }
                     break;
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
         }
     }
 }
