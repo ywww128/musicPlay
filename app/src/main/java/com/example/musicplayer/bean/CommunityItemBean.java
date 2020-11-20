@@ -1,4 +1,4 @@
-package com.example.musicplayer.entity;
+package com.example.musicplayer.bean;
 
 /**
  * 社区界面ListView中Item内容
