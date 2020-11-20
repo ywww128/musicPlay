@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.example.musicplayer.R;
 import com.example.musicplayer.adapter.CommunityAdapter;
 import com.example.musicplayer.adapter.CommunityAdapter.Callback;
-import com.example.musicplayer.entity.CommunityItemBean;
-import com.example.musicplayer.utils.XToastUtils;
+import com.example.musicplayer.bean.CommunityItemBean;
+import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 
@@ -32,6 +32,7 @@ import java.util.List;
 public class CommunityFragment extends Fragment implements OnItemClickListener, Callback {
 
     private ListView listView;
+    private TitleBar titleBar;
 
     public CommunityFragment() { }
 
@@ -46,15 +47,17 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
-        listView = view.findViewById(R.id.list1);
-        init();
+
+        init(view);
         return view;
     }
 
     /**
      * 将数据通过SimpleAdapter封装到ListView中
      */
-    private void init(){
+    private void init(View view){
+        listView = view.findViewById(R.id.list1);
+        titleBar = view.findViewById(R.id.tb_community);
         //数据库部分完成后替换为从数据库中读取数据
         List<CommunityItemBean> list = new ArrayList<>();
         list.add(new CommunityItemBean(R.drawable.dog1,"今天20:20","111","aaaaaa"));
@@ -69,6 +72,23 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
 
         listView.setAdapter(new CommunityAdapter(getActivity(), list, this));
         listView.setOnItemClickListener(this);
+
+        //设置标题栏左边图标监听器和右边图标及右边图标监听器
+        titleBar.setLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "点击了返回按钮", Toast.LENGTH_SHORT).show();
+            }
+        //设置标题栏右边图标并设置监听器，点击后跳转到写动态界面
+        }).addAction(new TitleBar.ImageAction(R.drawable.publish) {
+            @Override
+            public void performAction(View view) {
+                //跳转到PublishFragment
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new PublishFragment(), null)
+                             .addToBackStack(null).commit();
+                Toast.makeText(getActivity(), "点击了publish按钮", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

@@ -6,10 +6,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.musicplayer.R;
-import com.example.musicplayer.entity.CommunityItemBean;
+import com.example.musicplayer.bean.CommunityItemBean;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
@@ -84,6 +85,7 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
             viewHolder.content = convertView.findViewById(R.id.content);
             viewHolder.btn_like = convertView.findViewById(R.id.btn_like);
             viewHolder.btn_comment = convertView.findViewById(R.id.btn_comment);
+            viewHolder.comments = convertView.findViewById(R.id.comments);
 
             //将converView与viewHolder进行关联，之后可以直接取出viewHolder，取出对应组件
             convertView.setTag(viewHolder);
@@ -121,5 +123,6 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         TextView content;
         ShineButton btn_like;
         ShineButton btn_comment;
+        ListView comments;
     }
 }

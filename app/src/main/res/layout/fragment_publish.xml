@@ -5,21 +5,21 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".fragment.CommunityFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    tools:context=".fragment.PublishFragment">
 
     <com.xuexiang.xui.widget.actionbar.TitleBar
-        android:id="@+id/tb_community"
+        android:id="@+id/tb_publish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tb_titleText="@string/community"
         app:tb_leftImageResource="@drawable/back"
-        app:tb_leftText="@string/back"/>
-    <ListView
-        android:id="@+id/list1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        app:tb_leftText="@string/back"
+        app:tb_titleText="@string/publish_situation"/>
 
+    <com.xuexiang.xui.widget.edittext.MultiLineEditText
+        android:id="@+id/publish_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mlet_maxCount="150"
+        app:mlet_hintText="@string/hint_publish"
+        app:mlet_contentPadding="10dp" />
 </LinearLayout>
