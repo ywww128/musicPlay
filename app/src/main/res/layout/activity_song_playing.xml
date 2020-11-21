@@ -12,7 +12,6 @@
         android:id="@+id/title_bar_return"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:background="@color/xui_config_color_titlebar"
         app:tb_barHeight="65dp"
         app:tb_dividerColor="@color/xui_config_color_red"
@@ -31,27 +30,6 @@
         app:civ_border_color="#FF000000"
         app:civ_border_width="0dp" />
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="50dp"  />-->
-
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:text="所以暂时将你眼睛闭了起来"-->
-<!--        android:textColor="#ff0000" />-->
-
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:text="@string/lyric" />-->
-
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="50dp"  />-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,13 +42,13 @@
             android:layout_height="250dp"
             android:layout_marginTop="15dp"
             app:lrcAnimationDuration="1000"
-            app:lrcCurrentTextColor="@color/xui_config_color_white"
+            app:lrcCurrentTextColor="@color/xui_config_color_red"
             app:lrcDividerHeight="24dp"
-            app:lrcNormalTextColor="@color/xui_config_color_50_white"
+            app:lrcNormalTextColor="@color/xui_config_color_blue"
             app:lrcPadding="40dp"
             app:lrcTextSize="@dimen/lrc_text_size"
-            app:lrcTimelineColor="@color/xui_config_color_50_white"
-            app:lrcTimelineTextColor="#CCFFFFFF"/>
+            app:lrcTimelineColor="@color/xui_config_color_white"
+            app:lrcTimelineTextColor="@color/xui_config_color_black"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -79,7 +57,6 @@
         android:orientation="horizontal"
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp">
-
 
         <com.xuexiang.xui.widget.button.shinebutton.ShineButton
             android:id="@+id/shine_button_love"
@@ -167,8 +144,6 @@
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
-
-
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -227,7 +202,6 @@
             android:maxWidth="30dp"
             android:maxHeight="30dp"
             android:src="@drawable/song_playing_next" />
-
 
         <ImageView
             android:id="@+id/iv_music_list"
