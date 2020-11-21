@@ -1,6 +1,8 @@
 package com.example.musicplayer.fragment;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.musicplayer.R;
 import com.example.musicplayer.adapter.SearchResultAdapter;
 import com.example.musicplayer.bean.Song;
+import com.example.musicplayer.valley.SongObtain;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,7 @@ public class SearchResultFragment extends Fragment {
      */
     private ArrayList<Song> songs;
     private View view;
+    private SongObtain songObtain;
 
     @Nullable
     @Override
@@ -53,6 +57,8 @@ public class SearchResultFragment extends Fragment {
         searchResultAdapter.setItemClickListener(new SearchResultAdapter.OnItemClickListener() {
             @Override
             public void onSongClick(View view, int position) {
+                songObtain = new SongObtain(getContext(),songs.get(position).id);
+                songObtain.startGetJson();
                 Toast.makeText(getContext(),"你点击了Song"+position,Toast.LENGTH_SHORT).show();
             }
 
