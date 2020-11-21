@@ -1,5 +1,6 @@
 package com.example.musicplayer.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * @date 2020-11-19 21:18
  * 歌曲信息
  */
-public class Song {
+public class Song implements Serializable {
     public int id;
     public String name;
     public ArrayList<Artist> artists;
@@ -21,7 +22,7 @@ public class Song {
     public int mvid;
     public int fee;
     public String rUrl;
-    public int mark;
+    public long mark;
 
     @Override
     public String toString() {

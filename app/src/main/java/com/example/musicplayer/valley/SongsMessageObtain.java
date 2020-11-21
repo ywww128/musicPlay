@@ -47,6 +47,7 @@ public class SongsMessageObtain extends Application {
                 // 将json转化成Java对象，null值会被转成字符串
                 for(int i=0;i<allSongsArray.length();i++){
                     songs.add(gson.fromJson(String.valueOf(allSongsArray.getJSONObject(i)),Song.class));
+                    Log.d("TAG",songs.get(i).toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -85,7 +86,8 @@ public class SongsMessageObtain extends Application {
         mQueue.add(srReq);
     }
 
-
-
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
 }
 

@@ -1,12 +1,14 @@
 package com.example.musicplayer.bean;
 
 
+import java.io.Serializable;
+
 /**
  * @author ywww
  * @date 2020-11-19 21:32
  * 专辑
  */
-public class Album {
+public class Album implements Serializable {
     public int id;
     public String name;
     public Artist artist;
