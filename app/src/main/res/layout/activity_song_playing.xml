@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/song_playing_background_sky"
+    android:background="@drawable/song_playing_background2"
     tools:context=".SongPlayingActivity">
 
     <com.xuexiang.xui.widget.actionbar.TitleBar
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@color/xui_config_color_titlebar"
         app:tb_barHeight="65dp"
-        app:tb_dividerColor="@color/xui_config_color_red"
+        app:tb_dividerColor="@color/xui_config_color_titlebar"
         app:tb_leftText="回退"
         app:tb_sideTextPadding="20dp"
         app:tb_actionPadding="20dp"
@@ -64,8 +64,8 @@
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
             app:sb_checked_color="#f26d7d"
-            app:sb_icon_image="@drawable/song_playing_love_black"
-            app:sb_normal_color="@android:color/darker_gray" />
+            app:sb_normal_color="@android:color/darker_gray"
+            app:sb_icon_image="@drawable/song_playing_love_black" />
 
 
         <ImageView
@@ -165,7 +165,7 @@
             android:adjustViewBounds="true"
             android:maxWidth="30dp"
             android:maxHeight="30dp"
-            android:src="@drawable/song_playing_shuffle" />
+            android:src="@drawable/song_playing_transfer" />
 
         <ImageView
             android:id="@+id/iv_back"
