@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.musicplayer.bean.Song;
+import com.example.musicplayer.fragment.SearchResultFragment;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -27,11 +28,13 @@ public class SongsMessageObtain extends Application {
     private RequestQueue mQueue;
     private Context context;
     private ArrayList<Song> songs = new ArrayList<>();
+    private SearchResultFragment searchResultFragment;
     private String url = "http://116.62.109.242:3000/search?keywords=";
-    public SongsMessageObtain(Context context, String keywords){
+    public SongsMessageObtain(Context context, SearchResultFragment searchResultFragment,String keywords){
         this.context = context;
+        this.searchResultFragment = searchResultFragment;
         initRequestQueue();
-        url = url + keywords;
+        url = url + keywords + "&limit=100";
     }
 
     /**
@@ -47,8 +50,8 @@ public class SongsMessageObtain extends Application {
                 // 将json转化成Java对象，null值会被转成字符串
                 for(int i=0;i<allSongsArray.length();i++){
                     songs.add(gson.fromJson(String.valueOf(allSongsArray.getJSONObject(i)),Song.class));
-                    Log.d("TAG",songs.get(i).toString());
                 }
+                searchResultFragment.updateView(songs);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -89,5 +92,6 @@ public class SongsMessageObtain extends Application {
     public ArrayList<Song> getSongs() {
         return songs;
     }
+
 }
 

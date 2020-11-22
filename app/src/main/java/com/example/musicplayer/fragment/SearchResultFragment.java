@@ -1,12 +1,12 @@
 package com.example.musicplayer.fragment;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,22 +32,27 @@ public class SearchResultFragment extends Fragment {
      */
     private ArrayList<Song> songs;
     private View view;
+    private FrameLayout frameLayout;
     private SongObtain songObtain;
+    private View waitContent;
+    private View recyclerViewContent;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search_result,null);
-        Bundle bundle = getArguments();
-        songs = (ArrayList<Song>) bundle.getSerializable("songs");
+        frameLayout = view.findViewById(R.id.search_page_layout);
+        waitContent = inflater.inflate(R.layout.wait_content,null);
+        recyclerViewContent = inflater.inflate(R.layout.recylerview_search,null);
+        frameLayout.addView(waitContent);
+        return view;
+    }
+    public void updateView(final ArrayList<Song> songs){
+        this.songs = songs;
         for(int i=0;i<songs.size();i++){
             Log.d("TAG"+i,songs.get(i).name+songs.get(i).artists.get(0).name);
         }
-        initView();
-        return view;
-    }
-    private void initView(){
-        RecyclerView recyclerView = view.findViewById(R.id.search_result_view);
+        RecyclerView recyclerView = recyclerViewContent.findViewById(R.id.search_result_view);
         SearchResultAdapter searchResultAdapter = new SearchResultAdapter(songs);
         // 布局管理器，参数解释：上下文对象,方向,是否倒序
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -59,20 +64,22 @@ public class SearchResultFragment extends Fragment {
             public void onSongClick(View view, int position) {
                 songObtain = new SongObtain(getContext(),songs.get(position).id);
                 songObtain.startGetJson();
-                Toast.makeText(getContext(),"你点击了Song"+position,Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCollectClick(View view, int position) {
-                Toast.makeText(getContext(),"你点击了collect"+position,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"你点击了收藏"+position,Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMoreClick(View view, int position) {
-                Toast.makeText(getContext(),"你点击了more"+position,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"你点击了更多"+position,Toast.LENGTH_SHORT).show();
             }
 
         });
+        // 将刷新的布局删掉
+        frameLayout.removeAllViews();
+        frameLayout.addView(recyclerViewContent);
     }
 
 

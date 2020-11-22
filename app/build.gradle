@@ -36,6 +36,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.youth.banner:banner:1.4.9'
-    implementation 'com.wenwenwen888:searchbox:1.0.1'
     implementation 'com.android.volley:volley:1.1.1'
 }

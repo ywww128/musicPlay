@@ -30,9 +30,11 @@ public class SongObtain extends Application {
     private RequestQueue mQueue;
     private ConcreteSong concreteSong;
     private String url = "http://116.62.109.242:3000/song/url?id=";
+    private int songId;
     public SongObtain(Context context,int id){
         this.context = context;
         this.url = this.url + id;
+        this.songId = id;
         initRequestQueue();
     }
 
@@ -50,6 +52,7 @@ public class SongObtain extends Application {
             try {
                 JSONArray concreteJSONArray = response.getJSONArray("data");
                 JSONObject concreteSongJSON = concreteJSONArray.getJSONObject(0);
+                // 下列为测试代码
                 Log.d("TAAAAN",String.valueOf(concreteSongJSON));
                 concreteSong = gson.fromJson(String.valueOf(concreteSongJSON),ConcreteSong.class);
                 Log.d("TAD",concreteSong.toString());
@@ -66,6 +69,9 @@ public class SongObtain extends Application {
                     });
                 }catch (Exception e){
                 }
+                // 获取歌词的操作
+                SongWordsObtain songWordsObtain = new SongWordsObtain(context,songId);
+                songWordsObtain.startGetJson();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -95,7 +101,7 @@ public class SongObtain extends Application {
         JsonObjectRequest srReq = new JsonObjectRequest(url, null,
                 new SongObtain.JsonListener(), new SongObtain.StrErrListener());
         // 控制是否缓存
-        srReq.setShouldCache(true);
+        srReq.setShouldCache(false);
         mQueue.add(srReq);
     }
 
