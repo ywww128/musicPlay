@@ -8,11 +8,18 @@
     tools:context=".activity.MainActivity">
 
     <com.xuexiang.xui.widget.button.ButtonView
-        android:id="@+id/btn"
+        android:id="@+id/btn_community"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:textSolidColor="#FF0000"
-        android:text="toMainActivity2"
+        android:text="社区界面"
+        android:textSize="20sp"/>
+    <com.xuexiang.xui.widget.button.ButtonView
+        android:id="@+id/btn_song"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:textSolidColor="#FF0000"
+        android:text="歌曲评论界面"
         android:textSize="20sp"/>
 
 
