@@ -1,4 +1,4 @@
-package com.example.musicplayer;
+package com.example.musicplayer.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
@@ -17,7 +17,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.example.musicplayer.entity.Song;
+import com.example.musicplayer.R;
+import com.example.musicplayer.bean.PlaySongData;
+import com.example.musicplayer.bean.Song;
 import com.example.musicplayer.util.SongPlayingUtils;
 import com.xuexiang.xui.adapter.simple.XUISimpleAdapter;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
@@ -38,9 +40,9 @@ import me.wcy.lrcview.LrcView;
  *
  */
 public class SongPlayingActivity extends AppCompatActivity {
-    private static ArrayList<Song> songs = new ArrayList<>();
-    private static Song currentSong;                // 当前播放的音乐
-    private Song newSong;                           // 新歌曲
+    private static ArrayList<PlaySongData> songs = new ArrayList<>();
+    private static PlaySongData currentSong;                // 当前播放的音乐
+    private PlaySongData newSong;                           // 新歌曲
     private Intent intent;                          // 传递数据
 
     private Timer timer;                            // 时钟
@@ -99,8 +101,8 @@ public class SongPlayingActivity extends AppCompatActivity {
         Log.i("test", "onResume()is running...");
         getSongByIntent();      // 从Intent中获取传递过来的歌曲
         updateSong();           // 更新歌曲播放
-        for(Song s: songs) {
-            Log.i("song", String.valueOf(s.id));
+        for(PlaySongData s: songs) {
+            Log.i("song", String.valueOf(s.getId()));
         }
     }
 
@@ -136,11 +138,11 @@ public class SongPlayingActivity extends AppCompatActivity {
      */
     private void getSongByIntent() {
         intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("newSong");
+        Bundle bundle = intent.getBundleExtra("song");
         if(bundle != null) {
-            newSong = (Song) bundle.get("song");
+            newSong = (PlaySongData) bundle.get("song");
         }
-        Log.i("song", "newSong id:" + String.valueOf(newSong.id));
+        Log.i("song", "newSong id:" + String.valueOf(newSong.getId()));
     }
 
     /**
@@ -200,8 +202,8 @@ public class SongPlayingActivity extends AppCompatActivity {
                 case R.id.iv_back:              // 上一曲
                     newSong = SongPlayingUtils.getPreSong(songs, currentSong);
                     updateSong();
-                    for(Song song: songs) {
-                        Log.i("back", String.valueOf(song.id));
+                    for(PlaySongData song: songs) {
+                        Log.i("back", String.valueOf(song.getId()));
                     }
                     break;
                 case R.id.iv_play_music:        // 播放
@@ -292,7 +294,7 @@ public class SongPlayingActivity extends AppCompatActivity {
      */
     private void updateSong() {
         // 先判断新传入的歌曲是否与当前播放的音乐是同一首歌，如果不是则进入
-        if(currentSong == null || newSong != null && newSong.id != currentSong.id) {
+        if(currentSong == null || newSong != null && newSong.getId() != currentSong.getId()) {
             currentSong = newSong;  // 更新当前歌曲为新音乐
             if(!SongPlayingUtils.isNewSongInSongs(songs, newSong)) {
                 songs.add(newSong);     // 如果新歌曲不在播放列表中，则将新歌曲加入到播放列表中
@@ -308,7 +310,7 @@ public class SongPlayingActivity extends AppCompatActivity {
                 assert mediaPlayer != null;
                 mediaPlayer.reset();
                 if(currentSong != null) {
-                    mediaPlayer.setDataSource(currentSong.rUrl);
+                    mediaPlayer.setDataSource(currentSong.getUrl());
                     titleBarReturn.setTitle(SongPlayingUtils.getSongTitle(currentSong));
                 }
                 mediaPlayer.prepareAsync();

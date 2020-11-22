@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/song_playing_background2"
-    tools:context=".SongPlayingActivity">
+    tools:context=".activity.SongPlayingActivity">
 
     <com.xuexiang.xui.widget.actionbar.TitleBar
         android:id="@+id/title_bar_return"

@@ -4,8 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Telephony;
 
-import com.example.musicplayer.entity.Artist;
-import com.example.musicplayer.entity.Song;
+import com.example.musicplayer.bean.Artist;
+import com.example.musicplayer.bean.PlaySongData;
+import com.example.musicplayer.bean.Song;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,10 +63,10 @@ public class SongPlayingUtils {
      * @param currentSong 当前播放的音乐
      * @return 下一曲音乐
      */
-    public static Song getNextSong(ArrayList<Song> songs, Song currentSong) {
+    public static PlaySongData getNextSong(ArrayList<PlaySongData> songs, PlaySongData currentSong) {
         int len = songs.size();
         for(int i = 0; i < len; ++i) {
-            if(currentSong.id == songs.get(i).id) {
+            if(currentSong.getId() == songs.get(i).getId()) {
                 if(i == len - 1) {
                     return songs.get(0);
                 } else {
@@ -82,10 +83,10 @@ public class SongPlayingUtils {
      * @param currentSong 当前播放的音乐
      * @return 上一曲音乐
      */
-    public static Song getPreSong(ArrayList<Song> songs, Song currentSong) {
+    public static PlaySongData getPreSong(ArrayList<PlaySongData> songs, PlaySongData currentSong) {
         int len = songs.size();
         for(int i = 0; i < len; ++i) {
-            if(currentSong.id == songs.get(i).id) {
+            if(currentSong.getId() == songs.get(i).getId()) {
                 if(i == 0) {
                     return songs.get(len - 1);
                 } else {
@@ -101,7 +102,7 @@ public class SongPlayingUtils {
      * @param songs 播放列表
      * @return 随机一首歌
      */
-    public static Song getRandomSong(ArrayList<Song> songs) {
+    public static PlaySongData getRandomSong(ArrayList<PlaySongData> songs) {
         Random random = new Random();
         return songs.get(random.nextInt(songs.size()));
     }
@@ -112,10 +113,10 @@ public class SongPlayingUtils {
      * @param newSong 新歌曲
      * @return true/false
      */
-    public static boolean isNewSongInSongs(ArrayList<Song> songs, Song newSong) {
+    public static boolean isNewSongInSongs(ArrayList<PlaySongData> songs, PlaySongData newSong) {
         int len = songs.size();
         for(int i = 0; i < len; ++i) {
-            if(newSong.id == songs.get(i).id) {
+            if(newSong.getId() == songs.get(i).getId()) {
                 return true;
             }
         }
@@ -131,9 +132,9 @@ public class SongPlayingUtils {
      * @param song 歌曲信息
      * @return 歌曲标题格式字符串
      */
-    public static String getSongTitle(Song song) {
-        StringBuilder str = new StringBuilder(song.name + "（");
-        ArrayList<Artist> artists = song.artists;
+    public static String getSongTitle(PlaySongData song) {
+        StringBuilder str = new StringBuilder(song.getName() + "（");
+        ArrayList<Artist> artists = song.getArtists();
         if(artists != null) {
             for(int i = 0; i < artists.size(); ++i) {
                 str.append(artists.get(i).name);
@@ -152,7 +153,7 @@ public class SongPlayingUtils {
      * @param songs 播放列表的歌单
      * @return 歌曲信息字符串数组
      */
-    public static String[] songArrayListToArray(ArrayList<Song> songs) {
+    public static String[] songArrayListToArray(ArrayList<PlaySongData> songs) {
         int len = songs.size();
         String[] songsInformation = new String[len];
         for(int i = 0; i < len; ++i) {

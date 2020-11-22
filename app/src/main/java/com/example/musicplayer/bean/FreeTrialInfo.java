@@ -1,4 +1,4 @@
-package com.example.musicplayer.entity;
+package com.example.musicplayer.bean;
 
 /**
  * @author ywww

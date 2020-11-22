@@ -1,4 +1,4 @@
-package com.example.musicplayer.entity;
+package com.example.musicplayer.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,42 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <com.xuexiang.xui.widget.actionbar.TitleBar
+    tools:context=".activity.MainActivity">
+    <!--上fragment区域-->
+    <FrameLayout
+        android:id="@+id/fragment_top_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/xui_config_color_titlebar"
-        app:tb_barHeight="65dp"
-        app:tb_dividerColor="@color/xui_config_color_red"
-        app:tb_leftText="回退"
-        app:tb_sideTextPadding="20dp"
-        app:tb_actionPadding="20dp"
-        app:tb_titleText="这是一个Title" />
+        android:layout_height="wrap_content" />
+    <!--主fragment区域-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <FrameLayout
+            android:id="@+id/content_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </ScrollView>
 
-    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
-        style="@style/RoundButton.Auto"
-        android:text="hello"
-        android:id="@+id/btn_jump_to_song_playing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/xui_config_color_red"
-        android:layout_marginTop="20dp"
-        app:rb_borderWidth="1dp" />
-
-    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
-        style="@style/RoundButton.Auto"
-        android:text="hello2"
-        android:id="@+id/btn_jump_to_song_playing2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/xui_config_color_red"
-        android:layout_marginTop="20dp"
-        app:rb_borderWidth="1dp" />
-
+    <!--导航栏fragment区域-->
+    <FrameLayout
+        android:id="@+id/fragment_bottom_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
