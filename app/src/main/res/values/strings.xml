@@ -12,4 +12,8 @@
     <string name="back">返回</string>
     <string name="publish_situation">发表动态</string>
     <string name="hint_publish">说点什么吧~</string>
+    <string name="maohao">:</string>
+    <string name="name_song">歌名</string>
+    <string name="name_singer">歌手</string>
+    <string name="publish_comment">发表评论</string>
 </resources>
