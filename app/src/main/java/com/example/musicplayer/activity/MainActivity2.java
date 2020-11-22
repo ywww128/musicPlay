@@ -9,9 +9,14 @@ import android.os.Bundle;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.CommunityFragment;
+import com.example.musicplayer.fragment.SongCommentFragment;
 
+/**
+ * @author 14548
+ */
 public class MainActivity2 extends FragmentActivity {
     private CommunityFragment communityFragment;
+    FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,10 +25,21 @@ public class MainActivity2 extends FragmentActivity {
     }
 
     private void init(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        String info = getIntent().getStringExtra("info");
+        fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        communityFragment = new CommunityFragment();
-        fragmentTransaction.add(R.id.container, communityFragment);
+
+        if("community".equals(info)) {
+            fragmentTransaction.add(R.id.container, CommunityFragment.newInstance("zicai"), "cf");
+        }else{
+            fragmentTransaction.add(R.id.container, SongCommentFragment.newInstance("zicai","1"), "scf");
+        }
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        fragmentManager.popBackStack();
     }
 }

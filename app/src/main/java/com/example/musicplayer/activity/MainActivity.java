@@ -28,11 +28,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButtonView button = findViewById(R.id.btn);
-        button.setOnClickListener(new View.OnClickListener() {
+        ButtonView button1 = findViewById(R.id.btn_community);
+        ButtonView buuton2 = findViewById(R.id.btn_song);
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                intent.putExtra("info","community");
+                startActivity(intent);
+            }
+        });
+        buuton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                intent.putExtra("info", "song");
                 startActivity(intent);
             }
         });
