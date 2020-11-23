@@ -28,8 +28,8 @@ public class MainActivity2 extends FragmentActivity {
         String info = getIntent().getStringExtra("info");
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        if("community".equals(info)) {
+        String fragment = "community";
+        if(fragment.equals(info)) {
             fragmentTransaction.add(R.id.container, CommunityFragment.newInstance("zicai"), "cf");
         }else{
             fragmentTransaction.add(R.id.container, SongCommentFragment.newInstance("zicai","1"), "scf");

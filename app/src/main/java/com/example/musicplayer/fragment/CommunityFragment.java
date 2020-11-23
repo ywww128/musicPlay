@@ -88,10 +88,10 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         //每条动态的评论内容
         new DataUtil();
         //数据库部分完成后替换为从数据库中读取数据
-        Log.i("CommunityFragment", DataUtil.situation.toString());
+
         for (int i = 0; i < DataUtil.situation.size(); i++) {
             SimpleAdapter commentAdapter = null;
-            List<Map<String, Object>> item_community = new ArrayList<>();
+            List<Map<String, Object>> itemCommunity = new ArrayList<>();
             //每条动态的信息，下标0为id，1为头像，2为时间，3为昵称，4为内容
             String[] situationInfo = DataUtil.situation.get(i).split(" ");
             //每条评论的信息，下标0为id，1为内容，查找每条动态下的评论
@@ -104,18 +104,15 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
                         Map<String, Object> item = new HashMap<>(16);
                         item.put("comment_name", comment.get(j).split(":")[0]);
                         item.put("comment_content", comment.get(j).split(":")[1]);
-                        item_community.add(item);
+                        itemCommunity.add(item);
                     }
                 }
             }
-            commentAdapter = new SimpleAdapter(getActivity(), item_community, R.layout.comment
+            commentAdapter = new SimpleAdapter(getActivity(), itemCommunity, R.layout.comment
                     , new String[]{"comment_name", "comment_content"}
                     , new int[]{R.id.comment_name, R.id.comment_content});
             list.add(new CommunityItemBean(Integer.parseInt(situationInfo[1]), situationInfo[2], situationInfo[3], situationInfo[4]
                     , commentAdapter));
-            //一条动态当没有评论时如何解决，comment_community.get()越界
-//            String comments = comment_community.get(Integer.parseInt(situationInfo[0])).split(" ")[1];
-//
         }
 
 
@@ -152,6 +149,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         switch (tags[1]){
             case "like":
                 Log.i("Community-like","position:"+tags[0]);
+
                 break;
             case "comment":
                 showInputDialog(tags[0]);

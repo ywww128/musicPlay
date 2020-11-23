@@ -96,7 +96,7 @@ public class PublishSongCommentFragment extends Fragment {
         Date now = new Date();
         SimpleDateFormat df = new SimpleDateFormat("MM月dd日");
         String today = df.format(now);
-        String comment = songId+" 2131230849 "+today+" "+username+" "+info;
+        String comment = songId+" 2131230850 "+today+" "+username+" "+info;
         DataUtil.comment_song.add(comment);
     }
 }

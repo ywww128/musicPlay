@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.CommunityItemBean;
+import com.example.musicplayer.utils.DataUtil;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -84,8 +86,9 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
             viewHolder.name = convertView.findViewById(R.id.name);
             viewHolder.time = convertView.findViewById(R.id.time);
             viewHolder.content = convertView.findViewById(R.id.content);
-            viewHolder.btn_like = convertView.findViewById(R.id.btn_like);
-            viewHolder.btn_comment = convertView.findViewById(R.id.btn_comment);
+            viewHolder.btnLike = convertView.findViewById(R.id.btn_like);
+            viewHolder.btnLike.setChecked(true);
+            viewHolder.btnComment = convertView.findViewById(R.id.btn_comment);
             viewHolder.comments = convertView.findViewById(R.id.comments);
 
             //将converView与viewHolder进行关联，之后可以直接取出viewHolder，取出对应组件
@@ -103,10 +106,11 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         viewHolder.time.setText(item.getTime());
         viewHolder.content.setText(item.getContent());
         viewHolder.comments.setAdapter(item.getCommentAdapter());
-        viewHolder.btn_like.setOnClickListener(this);
-        viewHolder.btn_like.setTag(position+",like");
-        viewHolder.btn_comment.setOnClickListener(this);
-        viewHolder.btn_comment.setTag(position+",comment");
+        viewHolder.btnLike.setOnClickListener(this);
+        viewHolder.btnLike.setTag(position+",like");
+        viewHolder.btnLike.setChecked(isLike(String.valueOf(position)));
+        viewHolder.btnComment.setOnClickListener(this);
+        viewHolder.btnComment.setTag(position+",comment");
         setListViewHeightBasedOnChildren(viewHolder.comments);
 
         return convertView;
@@ -140,13 +144,25 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         listView.setLayoutParams(params);
     }
 
+    private boolean isLike(String position){
+        for(int i = 0; i < DataUtil.like_situation.size(); i++){
+            String[] likes = DataUtil.like_situation.get(i).split(" ");
+            if(position.equals(likes[0])) {
+                List<String> users = Arrays.asList(likes[1].split(","));
+                if(users.contains("zicai")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     class ViewHolder{
         RadiusImageView  avatar;
         TextView name;
         TextView time;
         TextView content;
-        ShineButton btn_like;
-        ShineButton btn_comment;
+        ShineButton btnLike;
+        ShineButton btnComment;
         ListView comments;
     }
 }

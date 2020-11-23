@@ -1,7 +1,6 @@
 package com.example.musicplayer.adapter;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.musicplayer.R;
-import com.example.musicplayer.bean.CommunityItemBean;
 import com.example.musicplayer.bean.SongCommentItemBean;
-import com.xuexiang.xui.widget.button.shadowbutton.ShadowButton;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
@@ -29,6 +26,10 @@ public class SongCommentAdapter extends BaseAdapter implements View.OnClickListe
     private CallBack callBack;
 
     public interface CallBack{
+        /**
+         * 歌曲评论点赞按钮回调函数，处理点击按钮事件
+         * @param v 被点击按钮所在的view
+         */
         public void click(View v);
     }
     public SongCommentAdapter(Context context, List<SongCommentItemBean> list, CallBack callBack) {
@@ -62,7 +63,7 @@ public class SongCommentAdapter extends BaseAdapter implements View.OnClickListe
             viewHolder.name = convertView.findViewById(R.id.comment_song_name);
             viewHolder.time = convertView.findViewById(R.id.comment_song_time);
             viewHolder.content = convertView.findViewById(R.id.comment_song_content);
-            viewHolder.btn_like = convertView.findViewById(R.id.btn_comment_song_like);
+            viewHolder.btnLike = convertView.findViewById(R.id.btn_comment_song_like);
 
             //将converView与viewHolder进行关联，之后可以直接取出viewHolder，取出对应组件
             convertView.setTag(viewHolder);
@@ -80,8 +81,8 @@ public class SongCommentAdapter extends BaseAdapter implements View.OnClickListe
         viewHolder.content.setText(item.getContent());
 
         //设置按钮监听器
-        viewHolder.btn_like.setOnClickListener(this);
-        viewHolder.btn_like.setTag(position+"");
+        viewHolder.btnLike.setOnClickListener(this);
+        viewHolder.btnLike.setTag(position+"");
 
         return convertView;
     }
@@ -96,6 +97,6 @@ public class SongCommentAdapter extends BaseAdapter implements View.OnClickListe
         TextView name;
         TextView time;
         TextView content;
-        ShineButton btn_like;
+        ShineButton btnLike;
     }
 }
