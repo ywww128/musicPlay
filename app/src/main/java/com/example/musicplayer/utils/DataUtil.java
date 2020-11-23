@@ -19,10 +19,12 @@ public class DataUtil {
     public static List<String> situation = null;
     public static List<String> comment_community = null;
     public static List<String> comment_song = null;
+    public static List<String> like_situation = null;
     static{
         situation = readTxt(R.raw.situation);
         comment_community = readTxt(R.raw.comment_comunity);
         comment_song = readTxt(R.raw.comment_song);
+        like_situation = readTxt(R.raw.like_situation);
     }
     private static List<String> readTxt(int filePath){
         InputStream is = getResources().openRawResource(filePath);
