@@ -1,12 +1,16 @@
 package com.example.musicplayer.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,8 +79,13 @@ public class TopMainFragment extends Fragment {
             searchResultFragment = new SearchResultFragment();
         }
         fTransaction.replace(R.id.content_panel,searchResultFragment).addToBackStack(null).commit();
+        // 隐藏键盘
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+
         // 进行歌曲信息获取操作
         songsMessageObtain = new SongsMessageObtain(mainActivity,searchResultFragment,keywords);
         songsMessageObtain.startGetJson();
     }
+
 }

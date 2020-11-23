@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.BottomMainFragment;
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     public void hideBottomView(FragmentTransaction fragmentTransaction){
         fragmentTransaction.hide(bottomMainFragment);
     }
+
+
     public FragmentManager getManager(){
         return fManager;
     }
