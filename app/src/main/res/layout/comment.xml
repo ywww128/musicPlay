@@ -6,15 +6,19 @@
     <TextView
         android:id="@+id/comment_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#378DEA"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/maohao"
+        android:textSize="14sp"
         android:layout_marginStart="5dp"/>
     <TextView
         android:id="@+id/comment_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"/>
+        android:layout_marginStart="5dp"
+        android:textSize="13sp" />
 </LinearLayout>

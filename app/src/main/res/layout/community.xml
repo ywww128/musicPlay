@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:layout_margin="10dp"
+    android:layout_margin="15dp"
     android:padding="10dp"
     >
 
@@ -15,7 +15,7 @@
             android:id="@+id/avatar"
             android:layout_gravity="center"
             android:clickable="true"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:src="@drawable/keqing"
             app:riv_border_color="@color/xui_config_color_gray_6"
@@ -29,33 +29,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textColor="#3D55EF"
+            android:textSize="16sp" />
         <TextView
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#3A3838"
             android:text="今天20:20"
-            android:textSize="16dp"/>
+            android:textSize="10sp"/>
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
+
         <ListView
             android:id="@+id/comments"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="#C2E6F8"
+            android:dividerHeight="0dp"/>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,8 +69,8 @@
 
             <com.xuexiang.xui.widget.button.shinebutton.ShineButton
                 android:id="@+id/btn_like"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentStart="true"
                 app:sb_allow_random_color="true"
                 app:sb_checked_color="#FF0000"
@@ -73,19 +78,19 @@
 
             <com.xuexiang.xui.widget.button.shinebutton.ShineButton
                 android:layout_toRightOf="@+id/btn_like"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="60dp"
                 android:id="@+id/btn_comment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:sb_checked_color="#AAAAAA"
                 app:sb_icon_image="@drawable/comment" />
 
             <com.xuexiang.xui.widget.button.shinebutton.ShineButton
                 android:layout_toRightOf="@+id/btn_comment"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="60dp"
                 android:id="@+id/btn_share"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:sb_checked_color="#AAAAAA"
                 app:sb_icon_image="@drawable/share" />
 
