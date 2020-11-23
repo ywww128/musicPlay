@@ -144,6 +144,11 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         listView.setLayoutParams(params);
     }
 
+    /**
+     * 判断当前评论是否已经点击like按钮
+     * @param position 当前评论的位置
+     * @return 已经点击返回true，否则返回false
+     */
     private boolean isLike(String position){
         for(int i = 0; i < DataUtil.like_situation.size(); i++){
             String[] likes = DataUtil.like_situation.get(i).split(" ");
@@ -156,6 +161,10 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         }
         return false;
     }
+
+    /**
+     * 存储每个评论的组件
+     */
     class ViewHolder{
         RadiusImageView  avatar;
         TextView name;

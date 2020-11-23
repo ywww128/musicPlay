@@ -76,6 +76,7 @@ public class PublishSongCommentFragment extends Fragment {
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //标题栏左边按钮的监听器
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container
                         , SongCommentFragment.newInstance(username, songId), null).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "点击了返回按钮", Toast.LENGTH_SHORT).show();

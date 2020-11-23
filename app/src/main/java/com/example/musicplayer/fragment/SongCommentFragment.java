@@ -93,6 +93,7 @@ public class SongCommentFragment extends Fragment implements SongCommentAdapter.
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //标题栏左边按钮的监听器
                 Toast.makeText(getActivity(), "SongCommentFragement--点击了返回按钮", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
