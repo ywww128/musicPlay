@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.fragment.app.FragmentTransaction;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.musicplayer.activity.SongPlayingActivity;
+import com.example.musicplayer.R;
+import com.example.musicplayer.activity.MainActivity;
 import com.example.musicplayer.bean.Lyric;
 import com.example.musicplayer.bean.PlaySongData;
+import com.example.musicplayer.fragment.SongPlayingFragment;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -29,10 +33,13 @@ public class SongWordsObtain extends Application {
     private Context context;
     private Lyric lyric;
     private String url = "http://116.62.109.242:3000/lyric?id=";
+    private SongPlayingFragment songPlayingFragment;
+    private MainActivity mainActivity;
     public SongWordsObtain(Context context, PlaySongData playSongData){
         this.context = context;
         this.playSongData = playSongData;
         this.url = this.url + playSongData.getId();
+        mainActivity = (MainActivity) context;
         initRequestQueue();
     }
 
@@ -54,11 +61,18 @@ public class SongWordsObtain extends Application {
                 e.printStackTrace();
             } finally {
                 Log.i("test", context.toString());
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("song", playSongData);
-                Intent intent = new Intent(context, SongPlayingActivity.class);
-                intent.putExtra("song", bundle);
-                context.startActivity(intent);
+                FragmentTransaction fTransaction = mainActivity.getManager().beginTransaction();
+                mainActivity.hideTopView(fTransaction);
+                mainActivity.returnTopMainFragment().hideSearchResultFragment(fTransaction);
+                if(songPlayingFragment == null){
+                    songPlayingFragment = new SongPlayingFragment();
+
+                    fTransaction.add(R.id.content_panel,songPlayingFragment);
+                } else {
+                    fTransaction.show(songPlayingFragment);
+                }
+                songPlayingFragment.setNewSong(playSongData);
+                fTransaction.addToBackStack(null).commit();
             }
         }
     }

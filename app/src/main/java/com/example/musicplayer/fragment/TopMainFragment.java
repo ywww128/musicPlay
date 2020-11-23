@@ -79,4 +79,8 @@ public class TopMainFragment extends Fragment {
         songsMessageObtain = new SongsMessageObtain(mainActivity,searchResultFragment,keywords);
         songsMessageObtain.startGetJson();
     }
+
+    public void hideSearchResultFragment(FragmentTransaction fragmentTransaction) {
+        fragmentTransaction.hide(searchResultFragment);
+    }
 }

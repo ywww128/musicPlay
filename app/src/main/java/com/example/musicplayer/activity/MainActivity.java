@@ -45,5 +45,9 @@ public class MainActivity extends AppCompatActivity {
         return bottomMainFragment;
     }
 
+    public TopMainFragment returnTopMainFragment() {
+        return topMainFragment;
+    }
+
 
 }

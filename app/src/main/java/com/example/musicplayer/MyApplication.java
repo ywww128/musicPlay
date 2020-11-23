@@ -8,7 +8,7 @@ import com.xuexiang.xui.XUI;
  * @author ywww
  * @date 2020-11-15 22:06
  */
-public class MyXUI extends Application {
+public class MyApplication extends Application {
 
     @Override
     public void onCreate() {

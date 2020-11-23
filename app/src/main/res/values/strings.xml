@@ -2,4 +2,6 @@
     <string name="app_name">MusicPlayer</string>
     <string name="button">返回</string>
     <string name="lyric">黑暗之中漂浮我的期待\n平静脸孔映着缤纷色彩\n让人好不疼爱\n你可以随着我的步伐\n轻轻柔柔的踩\n将美丽的回忆慢慢重来</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
