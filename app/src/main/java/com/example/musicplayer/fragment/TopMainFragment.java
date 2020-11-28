@@ -2,6 +2,7 @@ package com.example.musicplayer.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,7 +64,7 @@ public class TopMainFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(KeyEvent.KEYCODE_ENTER == keyCode){
-                    click(searchButton);
+                    click();
                 }
                 return false;
             }
@@ -71,7 +73,7 @@ public class TopMainFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                click(v);
+                click();
             }
         });
         // 打开播放界面的view的监听器
@@ -89,8 +91,12 @@ public class TopMainFragment extends Fragment {
         });
     }
 
-    private void click(View v) {
+    private void click() {
         String keywords = searchEdit.getText().toString();
+        if(keywords.equals("")){
+            Toast.makeText(mainActivity,"歌曲名不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
         searchEdit.setText("");
         FragmentTransaction fTransaction = fManager.beginTransaction();
         mainActivity.hideBottomView(fTransaction);
@@ -113,6 +119,10 @@ public class TopMainFragment extends Fragment {
 
     public void hideSearchResultFragment(FragmentTransaction fragmentTransaction) {
         fragmentTransaction.hide(searchResultFragment);
+    }
+
+    public SearchResultFragment getSearchResultFragment() {
+        return searchResultFragment;
     }
 
 }

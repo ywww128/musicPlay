@@ -56,14 +56,25 @@ public class SearchResultFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) getActivity();
             FragmentTransaction fTransaction = mainActivity.getManager().beginTransaction();
             fTransaction.add(R.id.top_search_content,topSearchFragment).commit();
+            // 第一次进入搜索界面的传值
+            topSearchFragment.setArguments(getArguments());
+        } else {
+            // 后来进入搜索页面的传值
+            Bundle bundle = getArguments();
+            topSearchFragment.changeEditViewText(bundle.getString("keywords"));
         }
+        return view;
+    }
+
+    /**
+     * 更新歌曲展示列表
+     * @param songs 歌曲信息
+     */
+    public void updateView(final ArrayList<Song> songs){
+        // 删除上一个界面的recylerView
         if(recyclerViewContent != null){
             linearLayout.removeView(recyclerViewContent);
         }
-        linearLayout.addView(waitContent);
-        return view;
-    }
-    public void updateView(final ArrayList<Song> songs){
         this.songs = songs;
         for(int i=0;i<songs.size();i++){
             Log.d("TAG"+i,songs.get(i).name+songs.get(i).artists.get(0).name);
@@ -76,6 +87,7 @@ public class SearchResultFragment extends Fragment {
         recyclerView.setAdapter(searchResultAdapter);
         // 设监听器
         searchResultAdapter.setItemClickListener(new SearchResultAdapter.OnItemClickListener() {
+            // 播放歌曲
             @Override
             public void onSongClick(View view, int position) {
                 playSongData = new PlaySongData();
@@ -87,11 +99,13 @@ public class SearchResultFragment extends Fragment {
                 songObtain.startGetJson();
             }
 
+            // 收藏歌曲
             @Override
             public void onCollectClick(View view, int position) {
                 Toast.makeText(getContext(),"你点击了收藏"+position,Toast.LENGTH_SHORT).show();
             }
 
+            // 更多设置
             @Override
             public void onMoreClick(View view, int position) {
                 Toast.makeText(getContext(),"你点击了更多"+position,Toast.LENGTH_SHORT).show();
