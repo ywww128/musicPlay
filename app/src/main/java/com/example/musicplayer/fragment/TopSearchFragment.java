@@ -1,11 +1,13 @@
 package com.example.musicplayer.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -78,6 +80,10 @@ public class TopSearchFragment extends Fragment {
             Toast.makeText(mainActivity,"歌曲名不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
+        // 隐藏键盘
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+
         // 进行歌曲信息获取操作
         songsMessageObtain = new SongsMessageObtain(mainActivity,
                 mainActivity.getTopMainFragment().getSearchResultFragment(),keywords);
