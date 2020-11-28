@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_margin="10dp"
+    android:padding="20dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/comment_song_avatar"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/keqing"
+            app:riv_border_color="@color/xui_config_color_gray_6"
+            app:riv_border_width="0px"
+            app:riv_is_circle="true"
+            app:riv_selected_border_color="@color/xui_config_color_gray_4"
+            app:riv_selected_border_width="1px"
+            app:riv_selected_mask_color="@color/xui_config_color_gray_8"/>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:id="@+id/comment_song_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#716E6E"
+            android:textSize="16sp" />
+        <com.xuexiang.xui.widget.button.shinebutton.ShineButton
+            android:id="@+id/btn_comment_song_like"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:sb_icon_image="@drawable/like"
+            android:layout_alignParentEnd="true"/>
+        <TextView
+            android:id="@+id/comment_song_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#706D6D"
+            android:text="11月21日"
+            android:textSize="10sp"
+            android:layout_below="@+id/comment_song_name"
+            android:layout_marginTop="1dp"/>
+        <TextView
+            android:id="@+id/comment_song_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:layout_below="@+id/comment_song_time"
+            android:layout_marginTop="5dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

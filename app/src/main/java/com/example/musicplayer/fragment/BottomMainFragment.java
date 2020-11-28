@@ -39,6 +39,7 @@ public class BottomMainFragment extends Fragment {
     private IndexFragment indexFragment;
     private MyMusicFragment myMusicFragment;
     private MyAccountFragment myAccountFragment;
+    private CommunityFragment communityFragment;
     private View view;
     private MainActivity mainActivity;
     private FragmentManager fManager;
@@ -125,10 +126,15 @@ public class BottomMainFragment extends Fragment {
                 break;
 
             case 3:
+                //跳转到社区主界面
                 imageMainTab3.setImageResource(R.drawable.community_logo1);
-                // 代写
+                if(communityFragment == null) {
+                    communityFragment = CommunityFragment.newInstance("zicai");
+                    fTransaction.add(R.id.content_panel, communityFragment, "cf").commit();
+                }else{
+                    fTransaction.show(communityFragment).commit();
+                }
                 break;
-
             case 4:
                 imageMainTab4.setImageResource(R.drawable.community_logo1);
                 if(myAccountFragment == null){
@@ -156,7 +162,7 @@ public class BottomMainFragment extends Fragment {
             }
             if(true){
                 imageMainTab3.setImageResource(R.drawable.community_logo2);
-                // 代写
+                fTransaction.hide(communityFragment);
             }
             if(myAccountFragment != null){
                 imageMainTab4.setImageResource(R.drawable.community_logo2);
