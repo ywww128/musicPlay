@@ -1,8 +1,7 @@
-package com.example.musicplayer.valley;
+package com.example.musicplayer.volley;
 
 import android.app.Application;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,14 +12,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.musicplayer.bean.ConcreteSong;
 import com.example.musicplayer.bean.PlaySongData;
-import com.example.musicplayer.bean.Song;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Queue;
 
 /**
  * @author ywww

@@ -2,7 +2,6 @@ package com.example.musicplayer.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
-import com.example.musicplayer.valley.SongsMessageObtain;
+import com.example.musicplayer.volley.SongsMessageObtain;
 
 /**
  * @author ywww

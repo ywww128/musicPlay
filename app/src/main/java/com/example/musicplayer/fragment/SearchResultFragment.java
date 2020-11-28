@@ -1,12 +1,10 @@
 package com.example.musicplayer.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -22,7 +20,7 @@ import com.example.musicplayer.activity.MainActivity;
 import com.example.musicplayer.adapter.SearchResultAdapter;
 import com.example.musicplayer.bean.PlaySongData;
 import com.example.musicplayer.bean.Song;
-import com.example.musicplayer.valley.SongObtain;
+import com.example.musicplayer.volley.SongObtain;
 
 import java.util.ArrayList;
 
