@@ -97,7 +97,6 @@ public class TopMainFragment extends Fragment {
             Toast.makeText(mainActivity,"歌曲名不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
-        searchEdit.setText("");
         FragmentTransaction fTransaction = fManager.beginTransaction();
         mainActivity.hideBottomView(fTransaction);
         mainActivity.hideTopView(fTransaction);
@@ -108,6 +107,7 @@ public class TopMainFragment extends Fragment {
         bundle.putString("keywords",keywords);
         searchResultFragment.setArguments(bundle);
         fTransaction.replace(R.id.content_panel,searchResultFragment).addToBackStack(null).commit();
+        searchEdit.setText("");
         // 隐藏键盘
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(),0);
