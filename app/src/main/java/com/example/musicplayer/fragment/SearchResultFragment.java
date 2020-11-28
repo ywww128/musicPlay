@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.R;
+import com.example.musicplayer.activity.MainActivity;
 import com.example.musicplayer.adapter.SearchResultAdapter;
 import com.example.musicplayer.bean.PlaySongData;
 import com.example.musicplayer.bean.Song;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 /**
  * @author ywww
  * @date 2020-11-20 0:46
+ * 搜索结果展示界面
  */
 public class SearchResultFragment extends Fragment {
     /**
@@ -35,20 +37,32 @@ public class SearchResultFragment extends Fragment {
      */
     private ArrayList<Song> songs;
     private View view;
-    private FrameLayout frameLayout;
+    private LinearLayout linearLayout;
+    private TopSearchFragment topSearchFragment;
     private SongObtain songObtain;
     private View waitContent;
     private View recyclerViewContent;
     private PlaySongData playSongData;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_search_result,null);
-        frameLayout = view.findViewById(R.id.search_page_layout);
-        waitContent = inflater.inflate(R.layout.wait_content,null);
-        recyclerViewContent = inflater.inflate(R.layout.recylerview_search,null);
-        frameLayout.addView(waitContent);
+        if(view == null){
+            view = inflater.inflate(R.layout.fragment_search_result,null);
+            linearLayout = view.findViewById(R.id.search_page_layout);
+            waitContent = inflater.inflate(R.layout.wait_content,null);
+            recyclerViewContent = inflater.inflate(R.layout.recylerview_search,null);
+            // 设置搜索界面的搜索框
+            topSearchFragment = new TopSearchFragment();
+            MainActivity mainActivity = (MainActivity) getActivity();
+            FragmentTransaction fTransaction = mainActivity.getManager().beginTransaction();
+            fTransaction.add(R.id.top_search_content,topSearchFragment).commit();
+        }
+        if(recyclerViewContent != null){
+            linearLayout.removeView(recyclerViewContent);
+        }
+        linearLayout.addView(waitContent);
         return view;
     }
     public void updateView(final ArrayList<Song> songs){
@@ -56,7 +70,7 @@ public class SearchResultFragment extends Fragment {
         for(int i=0;i<songs.size();i++){
             Log.d("TAG"+i,songs.get(i).name+songs.get(i).artists.get(0).name);
         }
-        RecyclerView recyclerView = recyclerViewContent.findViewById(R.id.search_result_view);
+        recyclerView = recyclerViewContent.findViewById(R.id.search_result_view);
         SearchResultAdapter searchResultAdapter = new SearchResultAdapter(songs);
         // 布局管理器，参数解释：上下文对象,方向,是否倒序
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -87,10 +101,8 @@ public class SearchResultFragment extends Fragment {
 
         });
         // 将刷新的布局删掉
-        frameLayout.removeAllViews();
-        frameLayout.addView(recyclerViewContent);
+        linearLayout.removeView(waitContent);
+        linearLayout.addView(recyclerViewContent);
     }
-
-
 
 }

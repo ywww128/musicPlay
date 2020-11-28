@@ -266,14 +266,17 @@ public class SongPlayingFragment extends Fragment {
                 case R.id.iv_listening_mode:    // 播放模式
                     playMode = (playMode + 1) % 3;
                     switch (playMode) {
-                        case 0:     // 顺序播放
-                            ivListeningMode.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_transfer));
+                        // 顺序播放
+                        case 0:
+                            ivListeningMode.setImageResource(R.drawable.song_playing_transfer);
                             break;
-                        case 1:     // 随机播放
-                            ivListeningMode.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_shuffle));
+                        // 随机播放
+                        case 1:
+                            ivListeningMode.setImageResource(R.drawable.song_playing_shuffle);
                             break;
-                        case 2:     // 单曲循环
-                            ivListeningMode.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_loop));
+                        // 单曲循环
+                        case 2:
+                            ivListeningMode.setImageResource(R.drawable.song_playing_loop);
                             break;
                         default:
                             break;
@@ -360,7 +363,7 @@ public class SongPlayingFragment extends Fragment {
         // 重启旋转动画
         rotationAnimator.resume();
         // 设置中间按钮图片为暂停
-        ivPlayMusic.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_suspend));
+        ivPlayMusic.setImageResource(R.drawable.song_playing_suspend);
     }
 
     /**
@@ -375,7 +378,7 @@ public class SongPlayingFragment extends Fragment {
         // 暂停旋转动画
         rotationAnimator.pause();
         // 设置中间按钮图片为播放
-        ivPlayMusic.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_play));
+        ivPlayMusic.setImageResource(R.drawable.song_playing_play);
     }
 
     /**
@@ -394,14 +397,14 @@ public class SongPlayingFragment extends Fragment {
             try {
                 assert mediaPlayer != null;
                 mediaPlayer.reset();
-                // 设置歌词为当前歌曲的歌词
-                lrcView.loadLrc(currentSong.getLrc());
-                lrcView.updateTime(0);
                 mediaPlayer.setDataSource(currentSong.getUrl());
                 mediaPlayer.prepareAsync();
                 mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
+                        // 设置歌词为当前歌曲的歌词
+                        lrcView.loadLrc(currentSong.getLrc());
+                        lrcView.updateTime(0);
                         titleBarReturn.setTitle(SongPlayingUtils.getSongTitle(currentSong));
                         seekBarSongProgress.setMax(mediaPlayer.getDuration());
                         tvMusicTotalTime.setText(SongPlayingUtils.convertTime(mediaPlayer.getDuration()));
@@ -421,7 +424,8 @@ public class SongPlayingFragment extends Fragment {
             // 顺序播放
             case 0:
                 newSong = SongPlayingUtils.getNextSong(songs, currentSong);
-                if(newSong == currentSong) {
+                assert newSong != null;
+                if(newSong.getId() == currentSong.getId()) {
                     mediaPlayer.seekTo(zero);
                 } else {
                     updateSong();

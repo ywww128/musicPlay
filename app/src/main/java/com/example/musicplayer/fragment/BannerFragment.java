@@ -48,10 +48,10 @@ public class BannerFragment extends Fragment implements OnBannerListener {
         //放标题的集合
         listTitle = new ArrayList<>();
 
-        listPath.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
-        listPath.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
-        listPath.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
-        listPath.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2e7vsaj30ci08cglz.jpg");
+        listPath.add("http://116.62.109.242/img/banner1.jpg");
+        listPath.add("http://116.62.109.242/img/banner2.jpg");
+        listPath.add("http://116.62.109.242/img/banner3.jpg");
+        listPath.add("http://116.62.109.242/img/banner4.jpg");
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置图片加载器，图片加载器在下方
