@@ -74,8 +74,11 @@ public class PublishFragment extends Fragment {
             public void performAction(View view) {
                 writeSituation();
                 Toast.makeText(getActivity(), "您输入了:"+editText.getContentText(), Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, CommunityFragment.newInstance(username), "cf")
-                        .addToBackStack(null).commit();
+                PublishFragment publishFragment = (PublishFragment) getActivity().getSupportFragmentManager().findFragmentByTag("pf");
+                CommunityFragment communityFragment = (CommunityFragment) getActivity().getSupportFragmentManager().findFragmentByTag("cf");
+                getActivity().getSupportFragmentManager().beginTransaction().hide(publishFragment).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().show(communityFragment).commit();
+                communityFragment.initData();
             }
         });
     }

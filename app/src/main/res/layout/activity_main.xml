@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
+    <!--上fragment区域-->
+    <FrameLayout
+        android:id="@+id/fragment_top_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <!--主fragment区域-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <FrameLayout
+            android:id="@+id/content_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </ScrollView>
 
-    <com.xuexiang.xui.widget.button.ButtonView
-        android:id="@+id/btn_community"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:textSolidColor="#FF0000"
-        android:text="社区界面"
-        android:textSize="20sp"/>
-    <com.xuexiang.xui.widget.button.ButtonView
-        android:id="@+id/btn_song"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:textSolidColor="#FF0000"
-        android:text="歌曲评论界面"
-        android:textSize="20sp"/>
-
-
-
+    <!--导航栏fragment区域-->
+    <FrameLayout
+        android:id="@+id/fragment_bottom_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

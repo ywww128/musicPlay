@@ -1,51 +1,56 @@
 package com.example.musicplayer.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.musicplayer.R;
-import com.xuexiang.xui.widget.button.ButtonView;
-import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.example.musicplayer.fragment.BottomMainFragment;
+import com.example.musicplayer.fragment.TopMainFragment;
 
 /**
- * @author czc
+ * @author ywww
+ * 主Activity
  */
 public class MainActivity extends AppCompatActivity {
+
+    private FragmentManager fManager;
+    private TopMainFragment topMainFragment;
+    private BottomMainFragment bottomMainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ButtonView button1 = findViewById(R.id.btn_community);
-        ButtonView buuton2 = findViewById(R.id.btn_song);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                intent.putExtra("info","community");
-                startActivity(intent);
-            }
-        });
-        buuton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                intent.putExtra("info", "song");
-                startActivity(intent);
-            }
-        });
+        fManager = getSupportFragmentManager();
+        topMainFragment = new TopMainFragment();
+        bottomMainFragment = new BottomMainFragment();
+        FragmentTransaction fragmentTransaction = fManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_top_main,topMainFragment);
+        fragmentTransaction.add(R.id.fragment_bottom_main,bottomMainFragment).commit();
     }
+
+    public void hideTopView(FragmentTransaction fragmentTransaction){
+        fragmentTransaction.hide(topMainFragment);
+    }
+    public void hideBottomView(FragmentTransaction fragmentTransaction){
+        fragmentTransaction.hide(bottomMainFragment);
+    }
+
+
+    public FragmentManager getManager(){
+        return fManager;
+    }
+    public BottomMainFragment getBottomMainFragment(){
+        return bottomMainFragment;
+    }
+
 
 }

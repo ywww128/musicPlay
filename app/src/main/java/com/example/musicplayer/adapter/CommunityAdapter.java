@@ -91,7 +91,7 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
             viewHolder.btnComment = convertView.findViewById(R.id.btn_comment);
             viewHolder.comments = convertView.findViewById(R.id.comments);
 
-            //将converView与viewHolder进行关联，之后可以直接取出viewHolder，取出对应组件
+            //将convertView与viewHolder进行关联，之后可以直接取出viewHolder，取出对应组件
             convertView.setTag(viewHolder);
         }else{
             //有converView的缓存，可以直接取出其中的viewHolder
@@ -105,7 +105,10 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         viewHolder.name.setText(item.getName());
         viewHolder.time.setText(item.getTime());
         viewHolder.content.setText(item.getContent());
+
+        viewHolder.comments.setAdapter(null);
         viewHolder.comments.setAdapter(item.getCommentAdapter());
+
         viewHolder.btnLike.setOnClickListener(this);
         viewHolder.btnLike.setTag(position+",like");
         viewHolder.btnLike.setChecked(isLike(String.valueOf(position)));

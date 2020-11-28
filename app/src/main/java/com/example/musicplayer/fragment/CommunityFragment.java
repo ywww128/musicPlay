@@ -23,6 +23,10 @@ import com.example.musicplayer.adapter.CommunityAdapter;
 import com.example.musicplayer.adapter.CommunityAdapter.Callback;
 import com.example.musicplayer.bean.CommunityItemBean;
 import com.example.musicplayer.utils.DataUtil;
+import com.scwang.smartrefresh.header.TaurusHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
@@ -43,6 +47,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
 
     private ListView listView;
     private TitleBar titleBar;
+    private SmartRefreshLayout smartRefreshLayout;
     private List<CommunityItemBean> list = new ArrayList<>();
 
 
@@ -75,50 +80,28 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
-        init(view);
+        listView = view.findViewById(R.id.list1);
+        titleBar = view.findViewById(R.id.tb_community);
+        smartRefreshLayout = view.findViewById(R.id.refreshLayout);
+        init();
         return view;
     }
 
     /**
      * 将数据通过SimpleAdapter封装到ListView中
      */
-    private void init(View view) {
-        listView = view.findViewById(R.id.list1);
-        titleBar = view.findViewById(R.id.tb_community);
-        //每条动态的评论内容
+    private void init() {
         new DataUtil();
-        //数据库部分完成后替换为从数据库中读取数据
-
-        for (int i = 0; i < DataUtil.situation.size(); i++) {
-            SimpleAdapter commentAdapter = null;
-            List<Map<String, Object>> itemCommunity = new ArrayList<>();
-            //每条动态的信息，下标0为id，1为头像，2为时间，3为昵称，4为内容
-            String[] situationInfo = DataUtil.situation.get(i).split(" ");
-            //每条评论的信息，下标0为id，1为内容，查找每条动态下的评论
-            for(int k = 0; k < DataUtil.comment_community.size(); k++) {
-                String commentInfo = DataUtil.comment_community.get(k);
-                //评论id与动态id相等
-                if(commentInfo.split(" ")[0].equals(situationInfo[0])) {
-                    List<String> comment = Arrays.asList(commentInfo.split(" ")[1].split(","));
-                    for(int j = 0; j < comment.size(); j++){
-                        Map<String, Object> item = new HashMap<>(16);
-                        item.put("comment_name", comment.get(j).split(":")[0]);
-                        item.put("comment_content", comment.get(j).split(":")[1]);
-                        itemCommunity.add(item);
-                    }
-                }
+        initData();
+        //设置SmartRefreshLayout的header样式
+        smartRefreshLayout.setRefreshHeader(new TaurusHeader(getActivity()));
+        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(1000);
+                Toast.makeText(getActivity(), "刷新", Toast.LENGTH_SHORT).show();
             }
-            commentAdapter = new SimpleAdapter(getActivity(), itemCommunity, R.layout.comment
-                    , new String[]{"comment_name", "comment_content"}
-                    , new int[]{R.id.comment_name, R.id.comment_content});
-            list.add(new CommunityItemBean(Integer.parseInt(situationInfo[1]), situationInfo[2], situationInfo[3], situationInfo[4]
-                    , commentAdapter));
-        }
-
-
-        listView.setAdapter(new CommunityAdapter(getActivity(), list, this));
-        listView.setOnItemClickListener(this);
-
+        });
         //设置标题栏左边图标监听器和右边图标及右边图标监听器
         titleBar.setLeftClickListener(new View.OnClickListener() {
             @Override
@@ -132,8 +115,16 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
             @Override
             public void performAction(View view) {
                 //跳转到PublishFragment,并将参数username传递给PublishFragment，设置tag为pf
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, PublishFragment.newInstance(username), "pf")
-                             .addToBackStack(null).commit();
+                PublishFragment publishFragment = (PublishFragment) getActivity().getSupportFragmentManager().findFragmentByTag("pf");
+                if(publishFragment == null){
+                    publishFragment = PublishFragment.newInstance(username);
+                    CommunityFragment communityFragment = (CommunityFragment) getActivity().getSupportFragmentManager().findFragmentByTag("cf");
+                    getActivity().getSupportFragmentManager().beginTransaction().hide(communityFragment).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.content_panel, publishFragment, "pf").commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().show(publishFragment).commit();
+                }
+
                 Toast.makeText(getActivity(), "点击了publish按钮", Toast.LENGTH_SHORT).show();
             }
         });
@@ -196,8 +187,8 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
                         //将评论写回
                         writeComment(dialog.getInputEditText().getText().toString(), position);
                         Toast.makeText(getActivity(), "你的评论:"+dialog.getInputEditText().getText().toString(), Toast.LENGTH_SHORT).show();
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container
-                                , CommunityFragment.newInstance(username), "cf").addToBackStack(null).commit();
+                        //刷新fragment中的数据
+                        initData();
                     }
                 })
                 .cancelable(true)
@@ -212,7 +203,49 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
     private void writeComment(String content, String position){
         String comment = position+" "+username+":"+content;
         DataUtil.comment_community.add(comment);
-        Log.i("comment",comment);
+        Log.i("comment",DataUtil.comment_community.toString());
     }
 
+    public void initData(){
+        //清空ListView中的数据
+        listView.setAdapter(null);
+        list.clear();
+        //每条动态的评论内容
+        //数据库部分完成后替换为从数据库中读取数据
+
+        for (int i = 0; i < DataUtil.situation.size(); i++) {
+            SimpleAdapter commentAdapter = null;
+            List<Map<String, Object>> itemCommunity = new ArrayList<>();
+            //每条动态的信息，下标0为id，1为头像，2为时间，3为昵称，4为内容
+            String[] situationInfo = DataUtil.situation.get(i).split(" ");
+            //每条评论的信息，下标0为id，1为内容，查找每条动态下的评论
+            for(int k = 0; k < DataUtil.comment_community.size(); k++) {
+                String commentInfo = DataUtil.comment_community.get(k);
+                //评论id与动态id相等
+                if(commentInfo.split(" ")[0].equals(situationInfo[0])) {
+                    List<String> comment = Arrays.asList(commentInfo.split(" ")[1].split(","));
+                    for(int j = 0; j < comment.size(); j++){
+                        Map<String, Object> item = new HashMap<>(16);
+                        item.put("comment_name", comment.get(j).split(":")[0]);
+                        item.put("comment_content", comment.get(j).split(":")[1]);
+                        itemCommunity.add(item);
+                    }
+                }
+            }
+            commentAdapter = new SimpleAdapter(getActivity(), itemCommunity, R.layout.comment
+                    , new String[]{"comment_name", "comment_content"}
+                    , new int[]{R.id.comment_name, R.id.comment_content});
+            list.add(new CommunityItemBean(Integer.parseInt(situationInfo[1]), situationInfo[2], situationInfo[3], situationInfo[4]
+                    , commentAdapter));
+        }
+
+        listView.setAdapter(new CommunityAdapter(getActivity(), list, this));
+        listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("CommunityFragment","onResume");
+    }
 }
