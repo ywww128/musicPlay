@@ -2,11 +2,9 @@ package com.example.musicplayer.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.provider.Telephony;
 
 import com.example.musicplayer.bean.Artist;
 import com.example.musicplayer.bean.PlaySongData;
-import com.example.musicplayer.bean.Song;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,8 +27,10 @@ public class SongPlayingUtils {
     @SuppressLint("DefaultLocale")
     public static String convertTime(int duration) {
         duration /= 1000;
-        int minute = duration / 60;  // 计算分钟数
-        int second = duration % 60;  // 计算余下的秒数
+        // 计算分钟数
+        int minute = duration / 60;
+        // 计算余下的秒数
+        int second = duration % 60;
         return String.format("%02d:%02d", minute, second);
     }
 
