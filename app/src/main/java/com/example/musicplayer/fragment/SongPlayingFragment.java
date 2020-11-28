@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatSeekBar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -22,7 +21,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.musicplayer.R;
-import com.example.musicplayer.activity.MainActivity;
 import com.example.musicplayer.bean.PlaySongData;
 import com.example.musicplayer.util.SongPlayingUtils;
 import com.xuexiang.xui.adapter.simple.XUISimpleAdapter;
@@ -45,6 +43,9 @@ import me.wcy.lrcview.LrcView;
  * @author zjw
  */
 public class SongPlayingFragment extends Fragment {
+    private final static int ZERO = 0;
+    private final static int THOUSAND = 1000;
+
     /**
      * 播放列表
      */
@@ -141,7 +142,7 @@ public class SongPlayingFragment extends Fragment {
     /**
      * 播放器
      */
-    private static MediaPlayer mediaPlayer = new MediaPlayer();;
+    private static MediaPlayer mediaPlayer = new MediaPlayer();
     /**
      * 音乐是否在播放
      */
@@ -149,7 +150,9 @@ public class SongPlayingFragment extends Fragment {
     /**
      * 播放模式，0-顺序，1-随机，2-循环
      */
-    private int playMode;
+    private static int playMode = 0;
+
+    private View view;
 
     public void setNewSong(PlaySongData playSongData) {
         this.newSong = playSongData;
@@ -163,13 +166,29 @@ public class SongPlayingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_song_playing, container, false);
-        initView(view);
-        setOnListener();
-        initRotationAnimator();
-        setTimer();
-        Log.i("123", "123");
-        updateSong();
+        Log.i("playMode", String.valueOf(playMode));
+        if(view == null) {
+            Log.i("viewTest", "执行了一次onCreateView()...");
+            view = inflater.inflate(R.layout.fragment_song_playing, container, false);
+            initView();
+            setOnListener();
+            initRotationAnimator();
+            setTimer();
+        }
+        if(currentSong != null && currentSong.getId() == newSong.getId()) {
+            // 恢复现场
+            seekBarSongProgress.setMax(mediaPlayer.getDuration());
+            seekBarSongProgress.setProgress(mediaPlayer.getCurrentPosition());
+            tvMusicCurrentTime.setText(SongPlayingUtils.convertTime(mediaPlayer.getCurrentPosition()));
+            tvMusicTotalTime.setText(SongPlayingUtils.convertTime(mediaPlayer.getDuration()));
+            titleBarReturn.setTitle(SongPlayingUtils.getSongTitle(newSong));
+            lrcView.loadLrc(newSong.getLrc());
+            lrcView.updateTime(mediaPlayer.getCurrentPosition());
+            play();
+        } else {
+            updateSong();
+        }
+
         return view;
     }
 
@@ -178,10 +197,7 @@ public class SongPlayingFragment extends Fragment {
         super.onStart();
     }
 
-    private void initView(View view) {
-        // 1表示初始播放模式为顺序播放
-        playMode = 0;
-
+    private void initView() {
         titleBarReturn = view.findViewById(R.id.title_bar_return);
 
         circleImageView = view.findViewById(R.id.img_circle_disc);
@@ -202,6 +218,8 @@ public class SongPlayingFragment extends Fragment {
         ivPlayMusic = view.findViewById(R.id.iv_play_music);
         ivNext = view.findViewById(R.id.iv_next);
         ivMusicList = view.findViewById(R.id.iv_music_list);
+
+        changePlayModeDrawable();
     }
 
     /**
@@ -237,6 +255,14 @@ public class SongPlayingFragment extends Fragment {
                 return true;
             }
         });
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                Log.i("completion", "播放完成。。。");
+                playNextSongByMode();
+            }
+        });
     }
 
     /**
@@ -265,19 +291,7 @@ public class SongPlayingFragment extends Fragment {
                     break;
                 case R.id.iv_listening_mode:    // 播放模式
                     playMode = (playMode + 1) % 3;
-                    switch (playMode) {
-                        case 0:     // 顺序播放
-                            ivListeningMode.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_transfer));
-                            break;
-                        case 1:     // 随机播放
-                            ivListeningMode.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_shuffle));
-                            break;
-                        case 2:     // 单曲循环
-                            ivListeningMode.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_loop));
-                            break;
-                        default:
-                            break;
-                    }
+                    changePlayModeDrawable();
                     break;
                 case R.id.iv_back:              // 上一曲
                     newSong = SongPlayingUtils.getPreSong(songs, currentSong);
@@ -342,9 +356,6 @@ public class SongPlayingFragment extends Fragment {
             tvMusicCurrentTime.setText(SongPlayingUtils.convertTime(position));
             mediaPlayer.seekTo(position);
             lrcView.updateTime(position);
-            if(currentSong.getDuration() - position <= 1000) {
-                playNextSong();
-            }
         }
     }
 
@@ -360,7 +371,7 @@ public class SongPlayingFragment extends Fragment {
         // 重启旋转动画
         rotationAnimator.resume();
         // 设置中间按钮图片为暂停
-        ivPlayMusic.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_suspend));
+        ivPlayMusic.setImageResource(R.drawable.song_playing_suspend);
     }
 
     /**
@@ -375,7 +386,7 @@ public class SongPlayingFragment extends Fragment {
         // 暂停旋转动画
         rotationAnimator.pause();
         // 设置中间按钮图片为播放
-        ivPlayMusic.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.song_playing_play));
+        ivPlayMusic.setImageResource(R.drawable.song_playing_play);
     }
 
     /**
@@ -392,19 +403,23 @@ public class SongPlayingFragment extends Fragment {
                 songs.add(newSong);
             }
             try {
+                Log.i("playNextSong", "执行成功位置2...");
                 assert mediaPlayer != null;
                 mediaPlayer.reset();
-                // 设置歌词为当前歌曲的歌词
-                lrcView.loadLrc(currentSong.getLrc());
-                lrcView.updateTime(0);
+
                 mediaPlayer.setDataSource(currentSong.getUrl());
                 mediaPlayer.prepareAsync();
                 mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
+                        Log.i("playNextSong", "执行成功位置3...");
+                        // 设置歌词为当前歌曲的歌词
+                        lrcView.loadLrc(currentSong.getLrc());
+                        lrcView.updateTime(ZERO);
+                        tvMusicTotalTime.setText(SongPlayingUtils.convertTime(currentSong.getDuration()));
+                        Log.i("playNextSong", SongPlayingUtils.getSongTitle(currentSong));
                         titleBarReturn.setTitle(SongPlayingUtils.getSongTitle(currentSong));
-                        seekBarSongProgress.setMax(mediaPlayer.getDuration());
-                        tvMusicTotalTime.setText(SongPlayingUtils.convertTime(mediaPlayer.getDuration()));
+                        seekBarSongProgress.setMax(currentSong.getDuration());
                         play();
                     }
                 });
@@ -414,15 +429,17 @@ public class SongPlayingFragment extends Fragment {
         }
     }
 
-    private void playNextSong() {
-        int zero =0;
+    private void playNextSongByMode() {
+        Log.i("playNextSong", "执行成功位置1...");
         // 根据播放模式更新下一首歌
         switch (playMode) {
             // 顺序播放
             case 0:
                 newSong = SongPlayingUtils.getNextSong(songs, currentSong);
-                if(newSong == currentSong) {
-                    mediaPlayer.seekTo(zero);
+                assert newSong != null;
+                if(newSong.getId() == currentSong.getId()) {
+                    mediaPlayer.seekTo(ZERO);
+                    play();
                 } else {
                     updateSong();
                 }
@@ -430,15 +447,17 @@ public class SongPlayingFragment extends Fragment {
             // 随机播放
             case 1:
                 newSong = SongPlayingUtils.getRandomSong(songs);
-                if(newSong == currentSong) {
-                    mediaPlayer.seekTo(zero);
+                if(newSong.getId() == currentSong.getId()) {
+                    mediaPlayer.seekTo(ZERO);
+                    play();
                 } else {
                     updateSong();
                 }
                 break;
             // 循环播放
             case 2:
-                mediaPlayer.seekTo(zero);
+                mediaPlayer.seekTo(ZERO);
+                play();
                 break;
             default:
                 break;
@@ -446,7 +465,7 @@ public class SongPlayingFragment extends Fragment {
     }
 
     /**
-     * 设置时钟，调整当
+     * 设置时钟，每秒执行一次，用于更新进度条和歌词进度等信息
      */
     private void setTimer() {
         // 线程池
@@ -458,12 +477,8 @@ public class SongPlayingFragment extends Fragment {
                 int progress = mediaPlayer.getCurrentPosition();
                 seekBarSongProgress.setProgress(progress);
                 lrcView.updateTime(progress);
-                int thousand = 1000;
-                if(mediaPlayer.getDuration() - progress <= thousand) {
-                    playNextSong();
-                }
             }
-        }, 0, 1000, TimeUnit.MILLISECONDS);
+        }, ZERO, THOUSAND, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -501,5 +516,21 @@ public class SongPlayingFragment extends Fragment {
         rotationAnimator.start();
         // 暂停旋转动画
         rotationAnimator.pause();
+    }
+
+    private void changePlayModeDrawable() {
+        switch (playMode) {
+            case 0:     // 顺序播放
+                ivListeningMode.setImageResource(R.drawable.song_playing_transfer);
+                break;
+            case 1:     // 随机播放
+                ivListeningMode.setImageResource(R.drawable.song_playing_shuffle);
+                break;
+            case 2:     // 单曲循环
+                ivListeningMode.setImageResource(R.drawable.song_playing_loop);
+                break;
+            default:
+                break;
+        }
     }
 }
