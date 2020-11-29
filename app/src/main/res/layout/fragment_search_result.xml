@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/search_page_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <!--搜索框位置-->
+    <FrameLayout
+        android:id="@+id/top_search_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <!--recyclerview位置，动态加入-->
 
-
-</FrameLayout>
+</LinearLayout>

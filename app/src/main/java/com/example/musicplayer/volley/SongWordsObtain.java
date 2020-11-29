@@ -1,9 +1,7 @@
-package com.example.musicplayer.valley;
+package com.example.musicplayer.volley;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.fragment.app.FragmentTransaction;
@@ -40,6 +38,7 @@ public class SongWordsObtain extends Application {
         this.playSongData = playSongData;
         this.url = this.url + playSongData.getId();
         mainActivity = (MainActivity) context;
+        songPlayingFragment = mainActivity.getSongPlayingFragment();
         initRequestQueue();
     }
 
@@ -62,11 +61,9 @@ public class SongWordsObtain extends Application {
             } finally {
                 Log.i("test", context.toString());
                 FragmentTransaction fTransaction = mainActivity.getManager().beginTransaction();
-                mainActivity.hideTopView(fTransaction);
-                mainActivity.returnTopMainFragment().hideSearchResultFragment(fTransaction);
+                mainActivity.getTopMainFragment().hideSearchResultFragment(fTransaction);
                 if(songPlayingFragment == null){
                     songPlayingFragment = new SongPlayingFragment();
-
                     fTransaction.add(R.id.content_panel,songPlayingFragment);
                 } else {
                     fTransaction.show(songPlayingFragment);

@@ -16,9 +16,11 @@ import com.example.musicplayer.R;
  * @date 2020-11-17 23:33
  */
 public class MyAccountFragment extends Fragment {
+    private View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_my_account,null);
+        view = inflater.inflate(R.layout.fragment_my_account,null);
+        return view;
     }
 }

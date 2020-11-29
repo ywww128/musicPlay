@@ -1,4 +1,4 @@
-package com.example.musicplayer.valley;
+package com.example.musicplayer.volley;
 
 import android.app.Application;
 import android.content.Context;
@@ -66,6 +66,7 @@ public class SongsMessageObtain extends Application {
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.e("TAG", error.getMessage(), error);
+            searchResultFragment.updateView(songs);
         }
     }
 

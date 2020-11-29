@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.BottomMainFragment;
+import com.example.musicplayer.fragment.SongPlayingFragment;
 import com.example.musicplayer.fragment.TopMainFragment;
 
 /**
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fManager;
     private TopMainFragment topMainFragment;
     private BottomMainFragment bottomMainFragment;
+    private SongPlayingFragment songPlayingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void hideTopView(FragmentTransaction fragmentTransaction){
         fragmentTransaction.hide(topMainFragment);
     }
+
     public void hideBottomView(FragmentTransaction fragmentTransaction){
         fragmentTransaction.hide(bottomMainFragment);
     }
@@ -66,13 +69,17 @@ public class MainActivity extends AppCompatActivity {
     public FragmentManager getManager(){
         return fManager;
     }
+
     public BottomMainFragment getBottomMainFragment(){
         return bottomMainFragment;
     }
 
-    public TopMainFragment returnTopMainFragment() {
+    public TopMainFragment getTopMainFragment() {
         return topMainFragment;
     }
 
+    public SongPlayingFragment getSongPlayingFragment(){
+        return songPlayingFragment;
+    }
 
 }
