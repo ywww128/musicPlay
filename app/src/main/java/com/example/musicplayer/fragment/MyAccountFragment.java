@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.musicplayer.R;
-import com.example.musicplayer.activity.MainActivity;
 
 /**
  * @author ywww
