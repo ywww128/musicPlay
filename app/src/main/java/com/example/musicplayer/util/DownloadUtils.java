@@ -71,7 +71,7 @@ public class DownloadUtils {
                     contentValues.put(MediaStore.Audio.Media.TITLE, currentSong.getName());
                     contentValues.put(MediaStore.Audio.Media.DURATION, currentSong.getDuration());
                     contentValues.put(MediaStore.Audio.Media.DATA, path);
-//                    contentValues.put(MediaStore.Audio.Media.ARTIST, currentSong.getArtists());
+                    contentValues.put(MediaStore.Audio.Media.ARTIST, currentSong.getAllArtistName());
                     contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, contentValues);
                 } catch (IOException e) {
                     e.printStackTrace();
