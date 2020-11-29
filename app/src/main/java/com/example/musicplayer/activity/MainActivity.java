@@ -27,6 +27,8 @@ import com.example.musicplayer.fragment.TopMainFragment;
  */
 public class MainActivity extends AppCompatActivity {
 
+    final static int TWENTY_THREE = 23;
+
     private FragmentManager fManager;
     private TopMainFragment topMainFragment;
     private BottomMainFragment bottomMainFragment;
@@ -36,15 +38,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 在Android6.0后，需要进行动态获取权限，这里获取向外存中读写权限
-        int twentyThree = 23;
-        if(Build.VERSION.SDK_INT > twentyThree) {
+        if(Build.VERSION.SDK_INT > TWENTY_THREE) {
             int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
             if(permission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             }
             permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if(permission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
 

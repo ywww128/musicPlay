@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
+import com.example.musicplayer.bean.PlaySongData;
 import com.example.musicplayer.volley.SongsMessageObtain;
 
 /**
@@ -85,7 +86,11 @@ public class TopMainFragment extends Fragment {
                 mainActivity.hideTopView(fTransaction);
                 if(songPlayingFragment == null){
                     songPlayingFragment = new SongPlayingFragment();
+
                 }
+                PlaySongData playSongData = new PlaySongData();
+                playSongData.setId(-1);
+                songPlayingFragment.setNewSong(playSongData);
                 fTransaction.replace(R.id.content_panel,songPlayingFragment).addToBackStack(null).commit();
             }
         });

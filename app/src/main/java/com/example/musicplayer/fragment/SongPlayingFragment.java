@@ -21,9 +21,11 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.bean.PlaySongData;
+import com.example.musicplayer.util.DownloadUtils;
 import com.example.musicplayer.util.FileUtils;
 import com.example.musicplayer.util.SongPlayingUtils;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -180,15 +182,14 @@ public class SongPlayingFragment extends Fragment {
             initRotationAnimator();
             setTimer();
         }
-        Log.i("musicUrl", newSong.getUrl());
-        if(currentSong != null && currentSong.getId() == newSong.getId()) {
+        if((currentSong != null && currentSong.getId() == newSong.getId()) || newSong.getId() == -1) {
             // 恢复现场
             seekBarSongProgress.setMax(mediaPlayer.getDuration());
             seekBarSongProgress.setProgress(mediaPlayer.getCurrentPosition());
             tvMusicCurrentTime.setText(SongPlayingUtils.convertTime(mediaPlayer.getCurrentPosition()));
             tvMusicTotalTime.setText(SongPlayingUtils.convertTime(mediaPlayer.getDuration()));
-            titleBarReturn.setTitle(SongPlayingUtils.getSongTitle(newSong));
-            lrcView.loadLrc(newSong.getLrc());
+            titleBarReturn.setTitle(SongPlayingUtils.getSongTitle(currentSong));
+            lrcView.loadLrc(currentSong.getLrc());
             lrcView.updateTime(mediaPlayer.getCurrentPosition());
             play();
         } else {
@@ -272,6 +273,7 @@ public class SongPlayingFragment extends Fragment {
                 case R.id.shine_button_love:    // 喜欢
                     break;
                 case R.id.iv_download:          // 下载
+                    DownloadUtils.downloadMusicToFile(currentSong.getUrl(), currentSong, getContext());
                     System.out.println("download");
                     break;
                 case R.id.iv_dialogue:          // 评论
@@ -407,10 +409,10 @@ public class SongPlayingFragment extends Fragment {
                         // 设置歌词为当前歌曲的歌词
                         lrcView.loadLrc(currentSong.getLrc());
                         lrcView.updateTime(ZERO);
-                        tvMusicTotalTime.setText(SongPlayingUtils.convertTime(currentSong.getDuration()));
+                        tvMusicTotalTime.setText(SongPlayingUtils.convertTime(mediaPlayer.getDuration()));
                         Log.i("playNextSong", SongPlayingUtils.getSongTitle(currentSong));
                         titleBarReturn.setTitle(SongPlayingUtils.getSongTitle(currentSong));
-                        seekBarSongProgress.setMax(currentSong.getDuration());
+                        seekBarSongProgress.setMax(mediaPlayer.getDuration());
                         play();
                     }
                 });

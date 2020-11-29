@@ -37,6 +37,7 @@ public class MyMusicFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(view == null){
+            Log.i("newone", "hello");
             view = inflater.inflate(R.layout.fragment_my_music,null);
             songList = SongResourceUtils.getSongList(getContext());
             mainActivity = (MainActivity) getActivity();
@@ -46,6 +47,7 @@ public class MyMusicFragment extends Fragment {
     }
 
     private void initView(){
+        Log.i("size", String.valueOf(songList.size()));
         RecyclerView recyclerView = view.findViewById(R.id.my_music_recyclerview);
         MyMusicAdapter myMusicAdapter = new MyMusicAdapter(songList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);

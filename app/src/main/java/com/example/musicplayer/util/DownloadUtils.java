@@ -1,8 +1,15 @@
 package com.example.musicplayer.util;
 
 import android.annotation.SuppressLint;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 
+import com.example.musicplayer.bean.PlaySongData;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import java.io.BufferedInputStream;
@@ -22,8 +29,6 @@ import java.util.concurrent.TimeUnit;
  * @thanks https://www.cnblogs.com/jmcui/p/8017473.html
  */
 public class DownloadUtils {
-    @SuppressLint("SdCardPath")
-    private static final String SD_CARD_MUSIC_PATH = "/sdcard/Music/";
 
     private static ThreadFactory downloadMusicThreadFactory = new ThreadFactoryBuilder().setNameFormat("download-music-pool-%d").build();
     private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
@@ -35,7 +40,7 @@ public class DownloadUtils {
             downloadMusicThreadFactory,
             new ThreadPoolExecutor.AbortPolicy());
 
-    public static void downloadMusicToFile(String musicUrl, String dir, String filename) {
+    public static void downloadMusicToFile(String musicUrl, PlaySongData currentSong, Context context) {
         threadPoolExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -45,6 +50,7 @@ public class DownloadUtils {
                 URL url = null;
                 byte[] buf = new byte[4096];
                 int size = 0;
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + currentSong.getName() + ".mp3";
                 try {
                     // 建立链接
                     url = new URL(musicUrl);
@@ -54,23 +60,36 @@ public class DownloadUtils {
                     // 获取网络输入流
                     bufferedInputStream = new BufferedInputStream(httpUrlConnection.getInputStream());
                     // 创建文件输入流，用于保存下载的文件
-                    fileOutputStream = new FileOutputStream(SD_CARD_MUSIC_PATH + filename);
+                    fileOutputStream = new FileOutputStream(path);
                     // 从链接资源中读取数据到文件中，读取方式为每次读取4个字节
                     while((size = bufferedInputStream.read(buf)) != -1)  {
                         fileOutputStream.write(buf, 0, size);
                     }
+                    ContentResolver contentResolver = context.getContentResolver();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MediaStore.Audio.Media._ID, currentSong.getId());
+                    contentValues.put(MediaStore.Audio.Media.TITLE, currentSong.getName());
+                    contentValues.put(MediaStore.Audio.Media.DURATION, currentSong.getDuration());
+                    contentValues.put(MediaStore.Audio.Media.DATA, path);
+//                    contentValues.put(MediaStore.Audio.Media.ARTIST, currentSong.getArtists());
+                    contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, contentValues);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     // 关闭资源
                     try {
-                        assert fileOutputStream != null;
-                        fileOutputStream.close();
-                        bufferedInputStream.close();
+                        if (fileOutputStream != null) {
+                            fileOutputStream.close();
+                        }
+                        if (bufferedInputStream != null) {
+                            bufferedInputStream.close();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    httpUrlConnection.disconnect();
+                    if(httpUrlConnection != null) {
+                        httpUrlConnection.disconnect();
+                    }
                 }
             }
         });
