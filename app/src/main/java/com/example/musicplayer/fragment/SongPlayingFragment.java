@@ -163,6 +163,7 @@ public class SongPlayingFragment extends Fragment {
      * 播放模式，0-顺序，1-随机，2-循环
      */
     private static int playMode = 0;
+    private static boolean isFirst = true;
 
     private View view;
 
@@ -174,15 +175,18 @@ public class SongPlayingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i("sdPath", FileUtils.getDiskFileDir(getContext()));
-        if(view == null) {
-            Log.i("viewTest", "执行了一次onCreateView()...");
-            view = inflater.inflate(R.layout.fragment_song_playing, container, false);
-            initView();
-            setOnListener();
-            initRotationAnimator();
-            setTimer();
-        }
-        if((currentSong != null && currentSong.getId() == newSong.getId()) || newSong.getId() == -1) {
+
+        Log.i("viewTest", "执行了一次onCreateView()...");
+        view = inflater.inflate(R.layout.fragment_song_playing, container, false);
+        initView();
+        setOnListener();
+        initRotationAnimator();
+        setTimer();
+        // 如果新传入的歌和正在播放的歌曲相同，或者新传入的歌曲id号为-1（表示继续播放原歌曲），则恢复现场
+        boolean isRestoreSite = (currentSong != null && currentSong.getId() == newSong.getId()) || newSong.getId() == -1;
+        if(isFirst && newSong.getId() == -1) {
+            // 使用场景：打开音乐软件，直接点开播放界面时，且重复点击
+        } else if(isRestoreSite) {
             // 恢复现场
             seekBarSongProgress.setMax(mediaPlayer.getDuration());
             seekBarSongProgress.setProgress(mediaPlayer.getCurrentPosition());
@@ -193,6 +197,8 @@ public class SongPlayingFragment extends Fragment {
             lrcView.updateTime(mediaPlayer.getCurrentPosition());
             play();
         } else {
+            // 有新歌曲传入，将isFirst置为false，后面就不会再进入第一个if判断
+            isFirst = false;
             updateSong();
         }
 
