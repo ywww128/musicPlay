@@ -15,11 +15,42 @@
         app:tb_leftText="@string/back"
         app:tb_titleText="@string/publish_situation"/>
 
+    <RelativeLayout
+        android:layout_marginTop="15dp"
+        android:paddingStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/avatar_publish"
+            android:layout_gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dog1"
+            app:riv_border_color="@color/xui_config_color_gray_6"
+            app:riv_border_width="0px"
+            app:riv_is_circle="true"
+            app:riv_selected_border_color="@color/xui_config_color_gray_4"
+            app:riv_selected_border_width="1px"
+            app:riv_selected_mask_color="@color/xui_config_color_gray_8"/>
+        <TextView
+            android:id="@+id/username"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/avatar_publish"
+            android:layout_marginStart="20dp"
+            android:textSize="20sp"
+            android:text="zicai"/>
+
+    </RelativeLayout>
     <com.xuexiang.xui.widget.edittext.MultiLineEditText
+        android:layout_marginTop="20dp"
         android:id="@+id/publish_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:mlet_maxCount="150"
         app:mlet_hintText="@string/hint_publish"
-        app:mlet_contentPadding="10dp" />
+        app:mlet_contentPadding="10dp"
+        app:mlet_contentTextSize="18sp"
+        app:mlet_contentViewHeight="280dp"/>
 </LinearLayout>
