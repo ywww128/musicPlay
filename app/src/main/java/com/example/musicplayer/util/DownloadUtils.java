@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.musicplayer.bean.PlaySongData;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -50,7 +51,9 @@ public class DownloadUtils {
                 URL url = null;
                 byte[] buf = new byte[4096];
                 int size = 0;
-                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + currentSong.getName() + ".mp3";
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" +
+                        SongPlayingUtils.connectSingerNameWithUnderlineSymbol(currentSong.getArtists()) + "-" +
+                        currentSong.getName() + ".mp3";
                 try {
                     // 建立链接
                     url = new URL(musicUrl);
@@ -73,6 +76,7 @@ public class DownloadUtils {
                     contentValues.put(MediaStore.Audio.Media.DATA, path);
 //                    contentValues.put(MediaStore.Audio.Media.ARTIST, currentSong.getArtists());
                     contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, contentValues);
+//                    Toast.makeText(context, "歌曲“" + currentSong.getName() + "”已下载完成！", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {

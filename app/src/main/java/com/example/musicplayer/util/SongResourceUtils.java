@@ -45,7 +45,7 @@ public class SongResourceUtils {
                 // 专辑
                 String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
-                int ismusic = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC));
+                int isMusic = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC));
                 Log.i("url", String.valueOf(url));
                 // 判断是否符合是音乐的条件
                 //if(duration>=minDuration){
@@ -58,7 +58,7 @@ public class SongResourceUtils {
                 localSong.setUrl(url);
                 localSong.setAlbum(album);
                 localSong.setAlbum_id(album_id);
-                localSong.setIsMusic(ismusic);
+                localSong.setIsMusic(isMusic);
                 songList.add(localSong);
                 //}
 //            }
