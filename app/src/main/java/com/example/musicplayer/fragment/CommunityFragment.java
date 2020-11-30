@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.InputType;
 import android.util.Log;
@@ -27,9 +28,11 @@ import com.scwang.smartrefresh.header.TaurusHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.xuexiang.xui.utils.SnackbarUtils;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,9 +48,11 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
     private static final String USERNAME = "username";
     private String username;
 
+    private RadiusImageView publish;
     private ListView listView;
-    private TitleBar titleBar;
+
     private SmartRefreshLayout smartRefreshLayout;
+
     private List<CommunityItemBean> list = new ArrayList<>();
 
 
@@ -79,10 +84,11 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_community, container, false);
-
+        //初始化控件
+        publish = view.findViewById(R.id.publish);
         listView = view.findViewById(R.id.list1);
-        titleBar = view.findViewById(R.id.tb_community);
         smartRefreshLayout = view.findViewById(R.id.refreshLayout);
+
         init();
         return view;
     }
@@ -102,29 +108,20 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
                 Toast.makeText(getActivity(), "刷新", Toast.LENGTH_SHORT).show();
             }
         });
-        //设置标题栏左边图标监听器和右边图标及右边图标监听器
-        titleBar.setLeftClickListener(new View.OnClickListener() {
+
+        publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "点击了返回按钮", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        //设置标题栏右边图标并设置监听器，点击后跳转到写动态界面
-        }).addAction(new TitleBar.ImageAction(R.drawable.publish) {
-            @Override
-            public void performAction(View view) {
+                CommunityFragment communityFragment = (CommunityFragment) getActivity().getSupportFragmentManager().findFragmentByTag("cf");
+                getActivity().getSupportFragmentManager().beginTransaction().hide(communityFragment).commit();
                 //跳转到PublishFragment,并将参数username传递给PublishFragment，设置tag为pf
                 PublishFragment publishFragment = (PublishFragment) getActivity().getSupportFragmentManager().findFragmentByTag("pf");
                 if(publishFragment == null){
                     publishFragment = PublishFragment.newInstance(username);
-                    CommunityFragment communityFragment = (CommunityFragment) getActivity().getSupportFragmentManager().findFragmentByTag("cf");
-                    getActivity().getSupportFragmentManager().beginTransaction().hide(communityFragment).commit();
                     getActivity().getSupportFragmentManager().beginTransaction().add(R.id.content_panel, publishFragment, "pf").commit();
                 }else{
                     getActivity().getSupportFragmentManager().beginTransaction().show(publishFragment).commit();
                 }
-
                 Toast.makeText(getActivity(), "点击了publish按钮", Toast.LENGTH_SHORT).show();
             }
         });
@@ -175,23 +172,25 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
                 .input(getString(R.string.hint_comment), "", false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        Toast.makeText(getActivity(), "你的评论:"+dialog.getInputEditText().getText().toString(), Toast.LENGTH_SHORT).show();
+
                     }
                 })
+                .inputRange(1,50)
                 .positiveText(R.string.confirm)
                 .negativeText(R.string.cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        String info = dialog.getInputEditText().getText().toString();
                         //点击确认按钮触发事件
                         //将评论写回
-                        writeComment(dialog.getInputEditText().getText().toString(), position);
-                        Toast.makeText(getActivity(), "你的评论:"+dialog.getInputEditText().getText().toString(), Toast.LENGTH_SHORT).show();
+                        writeComment(info, position);
+                        Toast.makeText(getActivity(), "你的评论:"+info, Toast.LENGTH_SHORT).show();
                         //刷新fragment中的数据
                         initData();
-                    }
+                        }
                 })
-                .cancelable(true)
+                .cancelable(false)
                 .show();
     }
 
@@ -212,12 +211,16 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         list.clear();
         //每条动态的评论内容
         //数据库部分完成后替换为从数据库中读取数据
-
+        Log.i("Avatar", String.valueOf(R.drawable.dog1));
+        Log.i("Avatar", String.valueOf(R.drawable.dog2));
+        Log.i("Avatar", String.valueOf(R.drawable.keqing));
         for (int i = 0; i < DataUtil.situation.size(); i++) {
             SimpleAdapter commentAdapter = null;
             List<Map<String, Object>> itemCommunity = new ArrayList<>();
-            //每条动态的信息，下标0为id，1为头像，2为时间，3为昵称，4为内容
-            String[] situationInfo = DataUtil.situation.get(i).split(" ");
+            //每条动态的信息，下标0为id，1为头像，2为时间，3为昵称，4为内容,5为图片
+            String[] situationInfo = DataUtil.situation.get(i).split(",");
+
+            List<String> situationList = Arrays.asList(situationInfo);
             //每条评论的信息，下标0为id，1为内容，查找每条动态下的评论
             for(int k = 0; k < DataUtil.comment_community.size(); k++) {
                 String commentInfo = DataUtil.comment_community.get(k);
@@ -235,17 +238,11 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
             commentAdapter = new SimpleAdapter(getActivity(), itemCommunity, R.layout.comment
                     , new String[]{"comment_name", "comment_content"}
                     , new int[]{R.id.comment_name, R.id.comment_content});
-            list.add(new CommunityItemBean(Integer.parseInt(situationInfo[1]), situationInfo[2], situationInfo[3], situationInfo[4]
-                    , commentAdapter));
+            list.add(new CommunityItemBean(Integer.parseInt(situationInfo[1]), situationInfo[2], situationInfo[3]
+                    , situationInfo[4], Integer.parseInt(situationInfo[5]), commentAdapter));
         }
 
         listView.setAdapter(new CommunityAdapter(getActivity(), list, this));
         listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i("CommunityFragment","onResume");
     }
 }

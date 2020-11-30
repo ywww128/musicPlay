@@ -86,6 +86,7 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
             viewHolder.name = convertView.findViewById(R.id.name);
             viewHolder.time = convertView.findViewById(R.id.time);
             viewHolder.content = convertView.findViewById(R.id.content);
+            viewHolder.image_content = convertView.findViewById(R.id.image_content);
             viewHolder.btnLike = convertView.findViewById(R.id.btn_like);
             viewHolder.btnLike.setChecked(true);
             viewHolder.btnComment = convertView.findViewById(R.id.btn_comment);
@@ -105,6 +106,7 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         viewHolder.name.setText(item.getName());
         viewHolder.time.setText(item.getTime());
         viewHolder.content.setText(item.getContent());
+        viewHolder.image_content.setImageResource(item.getImage_content());
 
         viewHolder.comments.setAdapter(null);
         viewHolder.comments.setAdapter(item.getCommentAdapter());
@@ -175,6 +177,7 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
         TextView content;
         ShineButton btnLike;
         ShineButton btnComment;
+        RadiusImageView image_content;
         ListView comments;
     }
 }
