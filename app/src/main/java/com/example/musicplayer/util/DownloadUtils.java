@@ -74,7 +74,7 @@ public class DownloadUtils {
                     contentValues.put(MediaStore.Audio.Media.TITLE, currentSong.getName());
                     contentValues.put(MediaStore.Audio.Media.DURATION, currentSong.getDuration());
                     contentValues.put(MediaStore.Audio.Media.DATA, path);
-//                    contentValues.put(MediaStore.Audio.Media.ARTIST, currentSong.getArtists());
+                    contentValues.put(MediaStore.Audio.Media.ARTIST, currentSong.getAllArtistName());
                     contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, contentValues);
 //                    Toast.makeText(context, "歌曲“" + currentSong.getName() + "”已下载完成！", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {

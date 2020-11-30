@@ -8,13 +8,18 @@
     tools:context=".fragment.CommunityFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.xuexiang.xui.widget.actionbar.TitleBar
-        android:id="@+id/tb_community"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tb_titleText="@string/community"
-        app:tb_leftImageResource="@drawable/back"
-        app:tb_leftText="@string/back"/>
+        android:layout_height="wrap_content">
+        <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/publish"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
+            android:layout_width="33dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/publish"/>
+    </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"

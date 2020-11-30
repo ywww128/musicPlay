@@ -23,9 +23,21 @@ public class CommunityItemBean {
      * 发送内容
      */
     private String content;
+    /**
+     * 发布动态附带的图片
+     */
+    private int image_content;
 
     private SimpleAdapter commentAdapter;
 
+    public CommunityItemBean(int avatar, String time, String name, String content, int image_content, SimpleAdapter commentAdapter) {
+        this.avatar = avatar;
+        this.time = time;
+        this.name = name;
+        this.content = content;
+        this.image_content = image_content;
+        this.commentAdapter = commentAdapter;
+    }
     public CommunityItemBean(int avatar, String time, String name, String content, SimpleAdapter commentAdapter) {
         this.avatar = avatar;
         this.time = time;
@@ -33,6 +45,7 @@ public class CommunityItemBean {
         this.content = content;
         this.commentAdapter = commentAdapter;
     }
+
 
     public int getAvatar() {
         return avatar;
@@ -50,6 +63,9 @@ public class CommunityItemBean {
         return content;
     }
 
+    public int getImage_content(){
+        return image_content;
+    }
     public SimpleAdapter getCommentAdapter() {
         return commentAdapter;
     }

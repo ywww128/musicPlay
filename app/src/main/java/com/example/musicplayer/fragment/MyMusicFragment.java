@@ -36,13 +36,11 @@ public class MyMusicFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(view == null){
-            Log.i("newone", "hello");
-            view = inflater.inflate(R.layout.fragment_my_music,null);
-            songList = SongResourceUtils.getSongList(getContext());
-            mainActivity = (MainActivity) getActivity();
-            initView();
-        }
+        Log.i("newone", "hello");
+        view = inflater.inflate(R.layout.fragment_my_music,null);
+        songList = SongResourceUtils.getSongList(getContext());
+        mainActivity = (MainActivity) getActivity();
+        initView();
         return view;
     }
 
@@ -66,10 +64,8 @@ public class MyMusicFragment extends Fragment {
                 mainActivity.hideTopView(fTransaction);
                 if(songPlayingFragment == null){
                     songPlayingFragment = new SongPlayingFragment();
-                    fTransaction.add(R.id.content_panel,songPlayingFragment);
-                } else {
-                    fTransaction.show(songPlayingFragment);
                 }
+                fTransaction.replace(R.id.content_panel,songPlayingFragment);
                 songPlayingFragment.setNewSong(playSongData);
                 fTransaction.addToBackStack(null).commit();
             }

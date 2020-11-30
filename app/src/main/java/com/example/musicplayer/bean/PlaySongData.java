@@ -74,5 +74,16 @@ public class PlaySongData implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String getAllArtistName(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0;i<artists.size();i++){
+            stringBuilder.append(artists.get(i).name);
+            if(i!=artists.size()-1){
+                stringBuilder.append(",");
+            }
+        }
+        return stringBuilder.toString();
+    }
 }
 
