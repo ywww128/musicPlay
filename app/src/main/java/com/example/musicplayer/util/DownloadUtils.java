@@ -72,6 +72,7 @@ public class DownloadUtils {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(MediaStore.Audio.Media._ID, currentSong.getId());
                     contentValues.put(MediaStore.Audio.Media.TITLE, currentSong.getName());
+                    Log.d("songName",currentSong.getName());
                     contentValues.put(MediaStore.Audio.Media.DURATION, currentSong.getDuration());
                     contentValues.put(MediaStore.Audio.Media.DATA, path);
                     contentValues.put(MediaStore.Audio.Media.ARTIST, currentSong.getAllArtistName());

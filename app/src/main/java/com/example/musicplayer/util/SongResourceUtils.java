@@ -37,6 +37,7 @@ public class SongResourceUtils {
                 LocalSong localSong = new LocalSong();
                 long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                 String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                Log.d("songName",name);
                 String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                 long size = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
