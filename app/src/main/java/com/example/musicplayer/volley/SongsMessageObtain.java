@@ -66,6 +66,7 @@ public class SongsMessageObtain extends Application {
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.e("TAG", error.getMessage(), error);
+            searchResultFragment.updateView(songs);
         }
     }
 

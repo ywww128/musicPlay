@@ -17,6 +17,7 @@
         android:layout_height="60dp"
         android:layout_weight="1"
         android:textColorHint="#F6EEEE"
+        android:text="0"
         android:textCursorDrawable="@color/defaultTextColor" />
 
     <Button

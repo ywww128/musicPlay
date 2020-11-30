@@ -2,6 +2,7 @@ package com.example.musicplayer.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
+import com.example.musicplayer.bean.PlaySongData;
 import com.example.musicplayer.volley.SongsMessageObtain;
 
 /**
@@ -62,7 +65,7 @@ public class TopMainFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(KeyEvent.KEYCODE_ENTER == keyCode){
-                    click(searchButton);
+                    click();
                 }
                 return false;
             }
@@ -71,7 +74,7 @@ public class TopMainFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                click(v);
+                click();
             }
         });
         // 打开播放界面的view的监听器
@@ -83,15 +86,22 @@ public class TopMainFragment extends Fragment {
                 mainActivity.hideTopView(fTransaction);
                 if(songPlayingFragment == null){
                     songPlayingFragment = new SongPlayingFragment();
+
                 }
+                PlaySongData playSongData = new PlaySongData();
+                playSongData.setId(-1);
+                songPlayingFragment.setNewSong(playSongData);
                 fTransaction.replace(R.id.content_panel,songPlayingFragment).addToBackStack(null).commit();
             }
         });
     }
 
-    private void click(View v) {
+    private void click() {
         String keywords = searchEdit.getText().toString();
-        searchEdit.setText("");
+        if(keywords.equals("")){
+            Toast.makeText(mainActivity,"歌曲名不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
         FragmentTransaction fTransaction = fManager.beginTransaction();
         mainActivity.hideBottomView(fTransaction);
         mainActivity.hideTopView(fTransaction);
@@ -102,6 +112,7 @@ public class TopMainFragment extends Fragment {
         bundle.putString("keywords",keywords);
         searchResultFragment.setArguments(bundle);
         fTransaction.replace(R.id.content_panel,searchResultFragment).addToBackStack(null).commit();
+        searchEdit.setText("");
         // 隐藏键盘
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(),0);
@@ -113,6 +124,10 @@ public class TopMainFragment extends Fragment {
 
     public void hideSearchResultFragment(FragmentTransaction fragmentTransaction) {
         fragmentTransaction.hide(searchResultFragment);
+    }
+
+    public SearchResultFragment getSearchResultFragment() {
+        return searchResultFragment;
     }
 
 }

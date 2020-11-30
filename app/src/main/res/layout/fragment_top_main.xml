@@ -18,7 +18,7 @@
         android:layout_weight="1"
         android:hint="输入查找歌曲"
         android:textColorHint="#F6EEEE"
-        android:textCursorDrawable="@color/defaultTextColor" />
+        android:textCursorDrawable="@color/defaultTextColor"/>
 
     <Button
         android:id="@+id/main_search_button"

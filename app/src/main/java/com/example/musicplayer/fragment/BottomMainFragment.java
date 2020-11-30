@@ -68,6 +68,9 @@ public class BottomMainFragment extends Fragment {
         imageMainTab4 = view.findViewById(R.id.image_main_tab4);
     }
 
+    /**
+     * 为底部导航栏设置监听器
+     */
     private void initListener(){
         mainTab1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,13 +102,14 @@ public class BottomMainFragment extends Fragment {
         });
     }
     /**
-     * 为底部导航栏设置监听器,xml文件里使用了onclick标签
+     * 为底部导航栏设置监听器执行内容
      */
     private void setMainTabClick(int position){
         FragmentTransaction fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
         switch (position){
             case 1:
+                // 主页
                 imageMainTab1.setImageResource(R.drawable.music_logo1);
                 if(indexFragment == null){
                     indexFragment = new IndexFragment();
@@ -116,6 +120,7 @@ public class BottomMainFragment extends Fragment {
                 break;
 
             case 2:
+                // 跳转到我的
                 imageMainTab2.setImageResource(R.drawable.music_logo1);
                 if(myMusicFragment == null){
                     myMusicFragment = new MyMusicFragment();
@@ -126,7 +131,7 @@ public class BottomMainFragment extends Fragment {
                 break;
 
             case 3:
-                //跳转到社区主界面
+                // 跳转到社区主界面
                 imageMainTab3.setImageResource(R.drawable.community_logo1);
                 if(communityFragment == null) {
                     communityFragment = CommunityFragment.newInstance("zicai");
@@ -135,7 +140,9 @@ public class BottomMainFragment extends Fragment {
                     fTransaction.show(communityFragment).commit();
                 }
                 break;
+
             case 4:
+                // 跳转到个人中心
                 imageMainTab4.setImageResource(R.drawable.community_logo1);
                 if(myAccountFragment == null){
                     myAccountFragment = new MyAccountFragment();
@@ -160,7 +167,7 @@ public class BottomMainFragment extends Fragment {
                 imageMainTab2.setImageResource(R.drawable.music_logo2);
                 fTransaction.hide(myMusicFragment);
             }
-            if(true){
+            if(communityFragment != null){
                 imageMainTab3.setImageResource(R.drawable.community_logo2);
                 fTransaction.hide(communityFragment);
             }
