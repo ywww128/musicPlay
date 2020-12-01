@@ -56,7 +56,8 @@
             android:id="@+id/image_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            app:riv_corner_radius="15dp"/>
 
         <ListView
             android:id="@+id/comments"

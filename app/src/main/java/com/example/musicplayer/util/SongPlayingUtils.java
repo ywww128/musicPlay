@@ -161,4 +161,35 @@ public class SongPlayingUtils {
         }
         return songsInformation;
     }
+
+    /**
+     * 通过“&”符号连接歌手名字
+     * @param artists 创作歌手
+     * @return 连接好的字符串
+     */
+    public static String connectSingerNameWithAndSymbol(ArrayList<Artist> artists) {
+        StringBuilder str = new StringBuilder();
+        if(artists != null) {
+            for(int i = 0; i < artists.size(); ++i) {
+                str.append(artists.get(i).name);
+                if(i != artists.size() - 1) {
+                    str.append(" & ");
+                }
+            }
+        }
+        return str.toString();
+    }
+
+    public static String connectSingerNameWithUnderlineSymbol(ArrayList<Artist> artists) {
+        StringBuilder str = new StringBuilder();
+        if(artists != null) {
+            for(int i = 0; i < artists.size(); ++i) {
+                str.append(artists.get(i).name);
+                if(i != artists.size() - 1) {
+                    str.append("_");
+                }
+            }
+        }
+        return str.toString();
+    }
 }

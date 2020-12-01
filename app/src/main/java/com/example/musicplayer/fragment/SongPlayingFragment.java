@@ -57,114 +57,41 @@ import static android.os.Environment.DIRECTORY_MUSIC;
 public class SongPlayingFragment extends Fragment {
     private final static int ZERO = 0;
     private final static int THOUSAND = 1000;
+    private View view;
 
-    /**
-     * 播放列表
-     */
     private static ArrayList<PlaySongData> songs = new ArrayList<>();
-
-    /**
-     * 当前播放的音乐
-     */
     private static PlaySongData currentSong;
-    /**
-     * 新歌曲
-     */
     private PlaySongData newSong;
-    /**
-     * 传递数据
-     */
-    private Intent intent;
-
-    /**
-     * 返回标题
-     */
     private TitleBar titleBarReturn;
 
-    /**
-     * 圆形框图片
-     */
     private CircleImageView circleImageView;
-    /**
-     * 旋转动画效果
-     */
     private ObjectAnimator rotationAnimator;
-
-    /**
-     * 歌词框
-     */
     private LrcView lrcView;
 
-    /**
-     * 喜欢
-     */
     private ShineButton shineButtonLove;
-    /**
-     * 下载
-     */
     private ImageView ivDownload;
-    /**
-     * 评论
-     */
     private ImageView ivDialogue;
-    /**
-     * 更多
-     */
     private ImageView ivMore;
 
-    /**
-     * 播放模式
-     */
-    private ImageView ivListeningMode;
-    /**
-     * 上一曲
-     */
-    private ImageView ivBack;
-    /**
-     * 播放
-     */
-    private ImageView ivPlayMusic;
-    /**
-     * 下一曲
-     */
-    private ImageView ivNext;
-    /**
-     * 播放列表
-     */
-    private ImageView ivMusicList;
-
-    /**
-     * 播放列表弹窗
-     */
-    private XUIListPopup musicListPopup;
-
-    /**
-     * 音乐播放时长
-     */
     private TextView tvMusicCurrentTime;
-    /**
-     * 音乐进度条
-     */
     private AppCompatSeekBar seekBarSongProgress;
-    /**
-     * 音乐总时长
-     */
     private TextView tvMusicTotalTime;
 
-    /**
-     * 播放器
-     */
+    private ImageView ivListeningMode;
+    private ImageView ivBack;
+    private ImageView ivPlayMusic;
+    private ImageView ivNext;
+    private ImageView ivMusicList;
+    private XUIListPopup musicListPopup;
+
     private static MediaPlayer mediaPlayer = new MediaPlayer();
-    /**
-     * 音乐是否在播放
-     */
     private boolean isPlayMusic;
+
     /**
      * 播放模式，0-顺序，1-随机，2-循环
      */
     private static int playMode = 0;
-
-    private View view;
+    private static boolean isFirst = true;
 
     public void setNewSong(PlaySongData playSongData) {
         this.newSong = playSongData;
@@ -174,15 +101,18 @@ public class SongPlayingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i("sdPath", FileUtils.getDiskFileDir(getContext()));
-        if(view == null) {
-            Log.i("viewTest", "执行了一次onCreateView()...");
-            view = inflater.inflate(R.layout.fragment_song_playing, container, false);
-            initView();
-            setOnListener();
-            initRotationAnimator();
-            setTimer();
-        }
-        if((currentSong != null && currentSong.getId() == newSong.getId()) || newSong.getId() == -1) {
+
+        Log.i("viewTest", "执行了一次onCreateView()...");
+        view = inflater.inflate(R.layout.fragment_song_playing, container, false);
+        initView();
+        setOnListener();
+        initRotationAnimator();
+        setTimer();
+        // 如果新传入的歌和正在播放的歌曲相同，或者新传入的歌曲id号为-1（表示继续播放原歌曲），则恢复现场
+        boolean isRestoreSite = (currentSong != null && currentSong.getId() == newSong.getId()) || newSong.getId() == -1;
+        if(isFirst && newSong.getId() == -1) {
+            // 使用场景：打开音乐软件，直接点开播放界面时，且重复点击
+        } else if(isRestoreSite) {
             // 恢复现场
             seekBarSongProgress.setMax(mediaPlayer.getDuration());
             seekBarSongProgress.setProgress(mediaPlayer.getCurrentPosition());
@@ -193,6 +123,8 @@ public class SongPlayingFragment extends Fragment {
             lrcView.updateTime(mediaPlayer.getCurrentPosition());
             play();
         } else {
+            // 有新歌曲传入，将isFirst置为false，后面就不会再进入第一个if判断
+            isFirst = false;
             updateSong();
         }
 

@@ -111,7 +111,7 @@ public class PublishFragment extends Fragment {
     private void writeSituation(){
         Date now = new Date();
         SimpleDateFormat df = new SimpleDateFormat("MM月dd日");
-        String info = "11,2131230850,"+df.format(now)+","+username+","+editText.getContentText() + ",0";
+        String info = "5,2131230853,"+df.format(now)+","+username+","+editText.getContentText() + ",0";
         Log.i("username",username);
         DataUtil.situation.add(info);
         Log.i("publishFragment",DataUtil.situation.toString());
