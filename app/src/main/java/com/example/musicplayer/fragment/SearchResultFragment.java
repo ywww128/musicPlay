@@ -62,7 +62,12 @@ public class SearchResultFragment extends Fragment {
             // 后来进入搜索页面的传值
             Bundle bundle = getArguments();
             topSearchFragment.changeEditViewText(bundle.getString("keywords"));
+            // 删除上一个界面的recylerView
+            linearLayout.removeView(recyclerViewContent);
+            recyclerView = null;
         }
+        // 加入等待界面
+        linearLayout.addView(waitContent);
         return view;
     }
 
@@ -71,9 +76,11 @@ public class SearchResultFragment extends Fragment {
      * @param songs 歌曲信息
      */
     public void updateView(final ArrayList<Song> songs){
-        // 删除上一个界面的recylerView
-        if(recyclerViewContent != null){
+        // 从搜索结果页面的搜索按钮进入
+        if(recyclerView != null){
             linearLayout.removeView(recyclerViewContent);
+            recyclerView = null;
+            linearLayout.addView(waitContent);
         }
         this.songs = songs;
         for(int i=0;i<songs.size();i++){
