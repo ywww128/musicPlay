@@ -49,11 +49,13 @@ public class SongsMessageObtain extends Application {
                 JSONArray allSongsArray = allSongs.getJSONArray("songs");
                 // 将json转化成Java对象，null值会被转成字符串
                 for(int i=0;i<allSongsArray.length();i++){
+                    Log.d("test1",String.valueOf(allSongsArray.getJSONObject(i)));
                     songs.add(gson.fromJson(String.valueOf(allSongsArray.getJSONObject(i)),Song.class));
                 }
-                searchResultFragment.updateView(songs);
             } catch (JSONException e) {
                 e.printStackTrace();
+            } finally {
+                searchResultFragment.updateView(songs);
             }
         }
     }
