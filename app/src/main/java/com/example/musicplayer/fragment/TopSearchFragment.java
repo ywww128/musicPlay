@@ -84,6 +84,8 @@ public class TopSearchFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(),0);
 
+        // 显示等待界面
+        mainActivity.getTopMainFragment().getSearchResultFragment().beginWait();
         // 进行歌曲信息获取操作
         songsMessageObtain = new SongsMessageObtain(mainActivity,
                 mainActivity.getTopMainFragment().getSearchResultFragment(),keywords);
@@ -92,5 +94,9 @@ public class TopSearchFragment extends Fragment {
 
     public void changeEditViewText(String keywords){
         this.searchEditView.setText(keywords);
+    }
+
+    public String getText(){
+        return String.valueOf(searchEditView.getText());
     }
 }

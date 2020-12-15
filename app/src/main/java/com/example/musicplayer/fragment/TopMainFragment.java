@@ -34,11 +34,10 @@ public class TopMainFragment extends Fragment {
     private View view;
     private Button searchButton;
     private EditText searchEdit;
-    private ImageView toPlayingPage;
+    private ImageView toMoreFunction;
     private SongsMessageObtain songsMessageObtain;
 
     private SearchResultFragment searchResultFragment;
-    private SongPlayingFragment songPlayingFragment;
     private MainActivity mainActivity;
     private FragmentManager fManager;
 
@@ -48,9 +47,8 @@ public class TopMainFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_top_main,null);
         searchButton = view.findViewById(R.id.main_search_button);
         searchEdit = view.findViewById(R.id.main_search_view);
-        toPlayingPage = view.findViewById(R.id.to_playing_page_view);
+        toMoreFunction = view.findViewById(R.id.to_more_function_view);
         mainActivity = (MainActivity) getActivity();
-        songPlayingFragment = mainActivity.getSongPlayingFragment();
         fManager = mainActivity.getManager();
         initSearchView();
         return view;
@@ -78,20 +76,10 @@ public class TopMainFragment extends Fragment {
             }
         });
         // 打开播放界面的view的监听器
-        toPlayingPage.setOnClickListener(new View.OnClickListener() {
+        toMoreFunction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fTransaction = fManager.beginTransaction();
-                mainActivity.hideBottomView(fTransaction);
-                mainActivity.hideTopView(fTransaction);
-                if(songPlayingFragment == null){
-                    songPlayingFragment = new SongPlayingFragment();
 
-                }
-                PlaySongData playSongData = new PlaySongData();
-                playSongData.setId(-1);
-                songPlayingFragment.setNewSong(playSongData);
-                fTransaction.replace(R.id.content_panel,songPlayingFragment).addToBackStack(null).commit();
             }
         });
     }

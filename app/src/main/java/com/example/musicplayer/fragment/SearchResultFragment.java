@@ -1,10 +1,13 @@
 package com.example.musicplayer.fragment;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -14,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
@@ -21,6 +25,8 @@ import com.example.musicplayer.adapter.SearchResultAdapter;
 import com.example.musicplayer.bean.PlaySongData;
 import com.example.musicplayer.bean.Song;
 import com.example.musicplayer.volley.SongObtain;
+import com.example.musicplayer.volley.SongsMessageObtain;
+import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
 import java.util.ArrayList;
 
@@ -35,22 +41,53 @@ public class SearchResultFragment extends Fragment {
      */
     private ArrayList<Song> songs;
     private View view;
-    private LinearLayout linearLayout;
     private TopSearchFragment topSearchFragment;
-    private SongObtain songObtain;
+    /**
+     * 放recyclerView的layout
+     */
+    private FrameLayout showSongsLayout;
+    /**
+     * 等待界面
+     */
     private View waitContent;
+    /**
+     * 等待界面图片旋转将要使用
+     */
+    private RadiusImageView waitImage;
+    private ObjectAnimator waitAnim;
+    /**
+     * recyclerView的xml文件读取使用
+     */
     private View recyclerViewContent;
-    private PlaySongData playSongData;
     private RecyclerView recyclerView;
+    private PlaySongData playSongData;
+    /**
+     * recyclerView刷新
+     */
+    private SwipeRefreshLayout refreshLayout;
+    private MainActivity mainActivity;
+    private SongObtain songObtain;
+    private SongsMessageObtain songsMessageObtain;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(view == null){
             view = inflater.inflate(R.layout.fragment_search_result,null);
-            linearLayout = view.findViewById(R.id.search_page_layout);
+            mainActivity = (MainActivity) getActivity();
+            showSongsLayout = view.findViewById(R.id.show_songs_content);
             waitContent = inflater.inflate(R.layout.wait_content,null);
+            waitImage = waitContent.findViewById(R.id.wait_image);
+            // 旋转动画
+            waitAnim = ObjectAnimator.ofFloat(waitImage,"rotation",0f,360f);
+            waitAnim.setDuration(5000);
+            // 重复无数次
+            waitAnim.setRepeatCount(-1);
+            // 去除停顿
+            waitAnim.setInterpolator(new LinearInterpolator());
             recyclerViewContent = inflater.inflate(R.layout.recylerview_search,null);
+            refreshLayout = recyclerViewContent.findViewById(R.id.search_swipe_refresh_layout);
+            initRefreshLayout();
             // 设置搜索界面的搜索框
             topSearchFragment = new TopSearchFragment();
             MainActivity mainActivity = (MainActivity) getActivity();
@@ -62,12 +99,13 @@ public class SearchResultFragment extends Fragment {
             // 后来进入搜索页面的传值
             Bundle bundle = getArguments();
             topSearchFragment.changeEditViewText(bundle.getString("keywords"));
-            // 删除上一个界面的recylerView
-            linearLayout.removeView(recyclerViewContent);
+            // 从主要搜索进入,删除上一个界面的recylerView
+            showSongsLayout.removeView(recyclerViewContent);
             recyclerView = null;
         }
         // 加入等待界面
-        linearLayout.addView(waitContent);
+        showSongsLayout.addView(waitContent);
+        waitAnim.start();
         return view;
     }
 
@@ -76,13 +114,8 @@ public class SearchResultFragment extends Fragment {
      * @param songs 歌曲信息
      */
     public void updateView(final ArrayList<Song> songs){
-        // 从搜索结果页面的搜索按钮进入
-        if(recyclerView != null){
-            linearLayout.removeView(recyclerViewContent);
-            recyclerView = null;
-            linearLayout.addView(waitContent);
-        }
         this.songs = songs;
+        // 数据输出查看
         for(int i=0;i<songs.size();i++){
             Log.d("TAG"+i,songs.get(i).name+songs.get(i).artists.get(0).name);
         }
@@ -119,9 +152,39 @@ public class SearchResultFragment extends Fragment {
             }
 
         });
-        // 将刷新的布局删掉
-        linearLayout.removeView(waitContent);
-        linearLayout.addView(recyclerViewContent);
+        // 刷新结束,刷新不需要等待界面切换
+        if(refreshLayout.isRefreshing()){
+            refreshLayout.setRefreshing(false);
+        } else {
+            waitAnim.end();
+            // 将刷新的布局删掉
+            showSongsLayout.removeView(waitContent);
+            showSongsLayout.addView(recyclerViewContent);
+        }
+    }
+
+    /**
+     * 进入加载动画
+     */
+    public void beginWait(){
+        showSongsLayout.removeView(recyclerViewContent);
+        showSongsLayout.addView(waitContent);
+        waitAnim.start();
+    }
+
+    /**
+     * 设置刷新监听器
+     */
+    private void initRefreshLayout(){
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // 进行歌曲信息获取操作
+                songsMessageObtain = new SongsMessageObtain(mainActivity,
+                        SearchResultFragment.this,topSearchFragment.getText());
+                songsMessageObtain.startGetJson();
+            }
+        });
     }
 
 }
