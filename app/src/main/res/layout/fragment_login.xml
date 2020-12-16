@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <FrameLayout
@@ -35,7 +37,7 @@
         android:layout_marginTop="20dp"
         android:hint="用户名"
         android:textSize="20dp"
-        android:textCursorDrawable="@color/xui_config_color_main_theme"
+        android:textCursorDrawable="@drawable/input_cursor_color"
         android:background="@color/colorWhite"/>
     <EditText
         android:id="@+id/password_login_text"
@@ -44,7 +46,7 @@
         android:hint="密码"
         android:textSize="20dp"
         android:inputType="textPassword"
-        android:textCursorDrawable="@color/xui_config_color_main_theme"
+        android:textCursorDrawable="@drawable/input_cursor_color"
         android:background="@color/colorWhite"/>
     <com.xuexiang.xui.widget.button.roundbutton.RoundButton
         android:id="@+id/login_button"

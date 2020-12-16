@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class LoginFragment extends Fragment {
     private TextView toRegisterView;
     private MainActivity mainActivity;
     private FragmentManager fManager;
+    private boolean isFromRegister = false;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class LoginFragment extends Fragment {
         toRegisterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isFromRegister = true;
                 FragmentTransaction fTransaction = fManager.beginTransaction();
                 fTransaction.hide(LoginFragment.this);
                 fTransaction.add(R.id.content_panel,new RegisterFragment()).addToBackStack(null).commit();
@@ -126,5 +129,8 @@ public class LoginFragment extends Fragment {
             usernameView.setText("");
             passwordView.setText("");
         }
+        // 隐藏键盘
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
     }
 }

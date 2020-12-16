@@ -29,7 +29,7 @@ import com.example.musicplayer.volley.SongsMessageObtain;
  * @date 2020-11-20 19:35
  * 主页搜索框与进入播放界面功能
  */
-public class TopMainFragment extends Fragment {
+public class TopMainFragment extends Fragment{
 
     private View view;
     private Button searchButton;
@@ -101,9 +101,6 @@ public class TopMainFragment extends Fragment {
         searchResultFragment.setArguments(bundle);
         fTransaction.replace(R.id.content_panel,searchResultFragment).addToBackStack(null).commit();
         searchEdit.setText("");
-        // 隐藏键盘
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
 
         // 进行歌曲信息获取操作
         songsMessageObtain = new SongsMessageObtain(mainActivity,searchResultFragment,keywords);
@@ -118,4 +115,14 @@ public class TopMainFragment extends Fragment {
         return searchResultFragment;
     }
 
+    /**
+     * 解决回退后键盘未隐藏以及光标出现的问题
+     * @param hidden
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        // 隐藏键盘
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+    }
 }

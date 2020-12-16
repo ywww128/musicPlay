@@ -100,7 +100,7 @@ public class SearchResultFragment extends Fragment {
             Bundle bundle = getArguments();
             topSearchFragment.changeEditViewText(bundle.getString("keywords"));
             // 从主要搜索进入,删除上一个界面的recylerView
-            showSongsLayout.removeView(recyclerViewContent);
+            showSongsLayout.removeAllViews();
             recyclerView = null;
         }
         // 加入等待界面
@@ -158,7 +158,7 @@ public class SearchResultFragment extends Fragment {
         } else {
             waitAnim.end();
             // 将刷新的布局删掉
-            showSongsLayout.removeView(waitContent);
+            showSongsLayout.removeAllViews();
             showSongsLayout.addView(recyclerViewContent);
         }
     }
@@ -167,7 +167,7 @@ public class SearchResultFragment extends Fragment {
      * 进入加载动画
      */
     public void beginWait(){
-        showSongsLayout.removeView(recyclerViewContent);
+        showSongsLayout.removeAllViews();
         showSongsLayout.addView(waitContent);
         waitAnim.start();
     }
@@ -187,4 +187,13 @@ public class SearchResultFragment extends Fragment {
         });
     }
 
+    /**
+     * 进入播放界面时要去除焦点和键盘
+     * @param hidden
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        topSearchFragment.hideSoftInput();
+        topSearchFragment.clearEditFocus();
+    }
 }
