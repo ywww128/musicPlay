@@ -18,12 +18,26 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
 import com.example.musicplayer.adapter.CommunityAdapter;
 import com.example.musicplayer.adapter.CommunityAdapter.Callback;
+import com.example.musicplayer.bean.Comment;
 import com.example.musicplayer.bean.CommunityItemBean;
+import com.example.musicplayer.bean.Post;
+import com.example.musicplayer.util.DataUtils;
+import com.example.musicplayer.util.RequestQueueUtils;
 import com.example.musicplayer.utils.DataUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.header.TaurusHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -34,6 +48,8 @@ import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,6 +70,8 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
     private SmartRefreshLayout smartRefreshLayout;
 
     private List<CommunityItemBean> list = new ArrayList<>();
+    private List<Comment> comments;
+    private RequestQueue requestQueue;
 
 
     public CommunityFragment() { }
@@ -77,6 +95,8 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         if(getArguments() != null){
             username = getArguments().getString(USERNAME);
         }
+
+        requestQueue = RequestQueueUtils.getRequestQueue(getActivity());
     }
 
     @Override
@@ -98,14 +118,15 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
      */
     private void init() {
         new DataUtil();
+
         initData();
         //设置SmartRefreshLayout的header样式
         smartRefreshLayout.setRefreshHeader(new TaurusHeader(getActivity()));
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(1000);
-                Toast.makeText(getActivity(), "刷新", Toast.LENGTH_SHORT).show();
+                refreshLayout.finishRefresh(1200);
+                initData();
             }
         });
 
@@ -209,40 +230,93 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         //清空ListView中的数据
         listView.setAdapter(null);
         list.clear();
-        //每条动态的评论内容
-        //数据库部分完成后替换为从数据库中读取数据
-        Log.i("Avatar", String.valueOf(R.drawable.dog1));
-        Log.i("Avatar", String.valueOf(R.drawable.dog2));
-        Log.i("Avatar", String.valueOf(R.drawable.keqing));
-        for (int i = 0; i < DataUtil.situation.size(); i++) {
-            SimpleAdapter commentAdapter = null;
-            List<Map<String, Object>> itemCommunity = new ArrayList<>();
-            //每条动态的信息，下标0为id，1为头像，2为时间，3为昵称，4为内容,5为图片
-            String[] situationInfo = DataUtil.situation.get(i).split(",");
-
-            List<String> situationList = Arrays.asList(situationInfo);
-            //每条评论的信息，下标0为id，1为内容，查找每条动态下的评论
-            for(int k = 0; k < DataUtil.comment_community.size(); k++) {
-                String commentInfo = DataUtil.comment_community.get(k);
-                //评论id与动态id相等
-                if(commentInfo.split(" ")[0].equals(situationInfo[0])) {
-                    List<String> comment = Arrays.asList(commentInfo.split(" ")[1].split(","));
-                    for(int j = 0; j < comment.size(); j++){
-                        Map<String, Object> item = new HashMap<>(16);
-                        item.put("comment_name", comment.get(j).split(":")[0]);
-                        item.put("comment_content", comment.get(j).split(":")[1]);
-                        itemCommunity.add(item);
+        //获取评论数据
+        getComments();
+        //返回数据监听器
+        Response.Listener<String> getAllPostListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+                Type postListType = new TypeToken<ArrayList<Post>>(){}.getType();
+                List<Post> posts = gson.fromJson(response, postListType);
+                //评论内容适配器
+                SimpleAdapter commentAdapter = null;
+                for(Post p : posts){
+                    String postId = p.getPostId();
+                    //获取动态对应的评论
+                    List<Map<String, Object>> itemComment = new ArrayList<>();
+                    for(Comment item : comments) {
+                        Map<String, Object> map = new HashMap<>(16);
+                        if(item.getCommentPostId().equals(postId)) {
+                            map.put("comment_name", item.getCommentId());
+                            map.put("comment_content", item.getCommentText());
+                            itemComment.add(map);
+                        }
                     }
+                    commentAdapter = new SimpleAdapter(getActivity(), itemComment, R.layout.comment
+                                        , new String[]{"comment_name", "comment_content"}
+                                        , new int[]{R.id.comment_name, R.id.comment_content});
+                    list.add(new CommunityItemBean(2131230854, p.getPostCreateTime(), p.getPostAuthorId(), p.getPostText()
+                            , 0, commentAdapter));
                 }
+                listView.setAdapter(new CommunityAdapter(getActivity(), list, CommunityFragment.this::click));
+                listView.setOnItemClickListener(CommunityFragment.this::onItemClick);
             }
-            commentAdapter = new SimpleAdapter(getActivity(), itemCommunity, R.layout.comment
-                    , new String[]{"comment_name", "comment_content"}
-                    , new int[]{R.id.comment_name, R.id.comment_content});
-            list.add(new CommunityItemBean(Integer.parseInt(situationInfo[1]), situationInfo[2], situationInfo[3]
-                    , situationInfo[4], Integer.parseInt(situationInfo[5]), commentAdapter));
-        }
+        };
+        //发生错误时的监听器
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("CommunityFragment", error.getMessage(), error);
+            }
+        };
 
-        listView.setAdapter(new CommunityAdapter(getActivity(), list, this));
-        listView.setOnItemClickListener(this);
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://10.0.2.2:8080/post/findAll"
+                , getAllPostListener, errorListener){
+            //修改编码格式，防止出现乱码
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String info = new String(response.data,"UTF-8");
+                    return Response.success(info,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        requestQueue.add(postRequest);
+    }
+
+    private void getComments() {
+        String commentUrl = "http://10.0.2.2:8080/comment/findAll";
+        StringRequest commentRequest = new StringRequest(Request.Method.POST, commentUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        Type commentListType = new TypeToken<ArrayList<Comment>>(){}.getType();
+                        comments = gson.fromJson(response, commentListType);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("CommunityFragment", error.getMessage(), error);
+            }
+        }){
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String info =  new String(response.data,"UTF-8");
+                    return Response.success(info,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        requestQueue.add(commentRequest);
     }
 }
