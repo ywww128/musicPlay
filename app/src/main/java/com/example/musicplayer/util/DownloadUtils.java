@@ -1,6 +1,7 @@
 package com.example.musicplayer.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -10,8 +11,10 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.musicplayer.R;
 import com.example.musicplayer.bean.PlaySongData;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.xuexiang.xui.widget.popupwindow.bar.CookieBar;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -31,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DownloadUtils {
 
-    private static ThreadFactory downloadMusicThreadFactory = new ThreadFactoryBuilder().setNameFormat("download-music-pool-%d").build();
+    public static ThreadFactory downloadMusicThreadFactory = new ThreadFactoryBuilder().setNameFormat("download-music-pool-%d").build();
     private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
             3,
             10,
@@ -41,7 +44,7 @@ public class DownloadUtils {
             downloadMusicThreadFactory,
             new ThreadPoolExecutor.AbortPolicy());
 
-    public static void downloadMusicToFile(String musicUrl, PlaySongData currentSong, Context context) {
+    public static void downloadMusicToFile(String musicUrl, PlaySongData currentSong, Context context, Activity activity) {
         threadPoolExecutor.execute(new Runnable() {
             @Override
             public void run() {
