@@ -2,6 +2,7 @@ package com.example.musicplayer.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +20,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
+import com.example.musicplayer.adapter.LoginListAdapter;
 import com.example.musicplayer.volley.UserLoginCheck;
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
@@ -27,6 +33,8 @@ import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +51,8 @@ public class LoginFragment extends Fragment {
     private TextView toRegisterView;
     private MainActivity mainActivity;
     private FragmentManager fManager;
+    private View recyclerViewContent;
+    private RecyclerView recyclerView;
     private String id;
     private String password;
     public  LoginFragment(){}
@@ -58,9 +68,12 @@ public class LoginFragment extends Fragment {
         backView = view.findViewById(R.id.cancel_login_view);
         loginButton = view.findViewById(R.id.login_button);
         toRegisterView = view.findViewById(R.id.to_register_view);
+        recyclerViewContent = inflater.inflate(R.layout.recyclerview_login_history,null);
+        recyclerView = recyclerViewContent.findViewById(R.id.login_history_list);
         mainActivity = (MainActivity) getActivity();
         fManager = mainActivity.getManager();
         initListener();
+        initRecyclerView();
         return view;
     }
 
@@ -105,6 +118,15 @@ public class LoginFragment extends Fragment {
                 passwordView.setText("");
             }
         });
+    }
+
+    private void  initRecyclerView(){
+        List<String> list = new ArrayList<>();
+        list.add("123");
+        list.add("456");
+        LoginListAdapter listAdapter = new LoginListAdapter(list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false));
+        recyclerView.setAdapter(listAdapter);
     }
 
     /**

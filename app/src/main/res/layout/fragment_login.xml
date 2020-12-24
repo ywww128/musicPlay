@@ -39,7 +39,7 @@
         android:id="@+id/id_login_text"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:hint="用户名"
+        android:hint="账号"
         android:textSize="20dp"
         android:textCursorDrawable="@drawable/input_cursor_color"
         android:background="@color/colorWhite" />
