@@ -31,10 +31,6 @@
             android:name=".service.MusicPlayingService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".service.NotificationService"
-            android:enabled="true"
-            android:exported="true" />
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
