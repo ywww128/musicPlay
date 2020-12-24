@@ -2,6 +2,10 @@ package com.example.musicplayer.fragment;
 
 import android.animation.ObjectAnimator;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +24,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
-import com.example.musicplayer.bean.PlaySongData;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
+
+import java.util.Objects;
 
 
 /**
@@ -69,6 +74,12 @@ public class BottomMainFragment extends Fragment {
         initView();
         initListener();
         setMainTabClick(1);
+
+        // 动态注册广播接收器
+        MsgReceiver msgReceiver = new MsgReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("UPDATE_MUSIC_PLAYING_FRAGMENT");
+        Objects.requireNonNull(getActivity()).registerReceiver(msgReceiver, intentFilter);
         return view;
     }
 
@@ -127,17 +138,12 @@ public class BottomMainFragment extends Fragment {
         toPlayingPageImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePlayMusicAnim(true);
                 FragmentTransaction fTransaction = fManager.beginTransaction();
                 mainActivity.hideBottomView(fTransaction);
                 mainActivity.hideTopView(fTransaction);
                 if(songPlayingFragment == null){
                     songPlayingFragment = new SongPlayingFragment();
-
                 }
-                PlaySongData playSongData = new PlaySongData();
-                playSongData.setId(-1);
-                songPlayingFragment.setNewSong(playSongData);
                 fTransaction.replace(R.id.content_panel,songPlayingFragment).addToBackStack(null).commit();
             }
         });
@@ -162,7 +168,7 @@ public class BottomMainFragment extends Fragment {
 
             case 2:
                 // 跳转到我的
-                imageMainTab2.setImageResource(R.drawable.music_logo1);
+                imageMainTab2.setImageResource(R.drawable.logo_me_1);
                 if(myMusicFragment == null){
                     myMusicFragment = new MyMusicFragment();
                     fTransaction.add(R.id.content_panel,myMusicFragment).commit();
@@ -173,7 +179,7 @@ public class BottomMainFragment extends Fragment {
 
             case 3:
                 // 跳转到社区主界面
-                imageMainTab3.setImageResource(R.drawable.community_logo1);
+                imageMainTab3.setImageResource(R.drawable.logo_community_2);
                 if(communityFragment == null) {
                     communityFragment = CommunityFragment.newInstance("zicai");
                     fTransaction.add(R.id.content_panel, communityFragment, "cf").commit();
@@ -205,11 +211,11 @@ public class BottomMainFragment extends Fragment {
                 fTransaction.hide(indexFragment);
             }
             if(myMusicFragment!=null) {
-                imageMainTab2.setImageResource(R.drawable.music_logo2);
+                imageMainTab2.setImageResource(R.drawable.logo_me_2);
                 fTransaction.hide(myMusicFragment);
             }
             if(communityFragment != null){
-                imageMainTab3.setImageResource(R.drawable.community_logo2);
+                imageMainTab3.setImageResource(R.drawable.logo_community_1);
                 fTransaction.hide(communityFragment);
             }
             if(myAccountFragment != null){
@@ -227,6 +233,29 @@ public class BottomMainFragment extends Fragment {
             playMusicAnim.start();
         } else {
             playMusicAnim.pause();
+        }
+    }
+
+    /**
+     * 广播接收器
+     * @author len
+     *
+     */
+    private class MsgReceiver extends BroadcastReceiver {
+        private boolean isPlayingTemp = false;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 拿到bundle更新界面
+            Bundle progressBundle = intent.getBundleExtra("progressBundle");
+            if(progressBundle != null) {
+                boolean isPlaying = progressBundle.getBoolean("isPlaying");
+                if(isPlaying != isPlayingTemp) {
+                    changePlayMusicAnim(isPlaying);
+                    isPlayingTemp = isPlaying;
+                }
+
+            }
         }
     }
 }
