@@ -133,17 +133,19 @@ public class SongPlayingUtils {
      * @return 歌曲标题格式字符串
      */
     public static String getSongTitle(PlaySongData song) {
-        StringBuilder str = new StringBuilder(song.getName() + "（");
+        StringBuilder str = new StringBuilder(song.getName());
         ArrayList<Artist> artists = song.getArtists();
         if(artists != null) {
+            str.append("（");
             for(int i = 0; i < artists.size(); ++i) {
                 str.append(artists.get(i).name);
                 if(i != artists.size() - 1) {
                     str.append(" & ");
                 }
             }
+            str.append("）");
         }
-        str.append("）");
+
         return str.toString();
     }
 
