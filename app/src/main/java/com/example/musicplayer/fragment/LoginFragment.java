@@ -149,6 +149,7 @@ public class LoginFragment extends Fragment {
             }
             editor.apply();
             Toast.makeText(getActivity(),"登录成功",Toast.LENGTH_SHORT).show();
+            mainActivity.getBottomMainFragment().setMsg(msg);
             // 传用户信息到账户界面进行展示
             Bundle bundle = new Bundle();
             bundle.putString("msg",String.valueOf(msg));
