@@ -7,6 +7,8 @@
     <color name="defaultTextColor">#8A000000</color>
     <color name="pressTextColor">#AA5E5555</color>
     <color name="colorBackground">#EDE1E5</color>
+
+    <color name="color_f4">#F4F4F4</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="skyBlue">#2196F3</color>
     <color name="grayBorder">#AA858181</color>

@@ -30,13 +30,16 @@ public class CommunityItemBean {
 
     private SimpleAdapter commentAdapter;
 
-    public CommunityItemBean(int avatar, String time, String name, String content, int image_content, SimpleAdapter commentAdapter) {
+    private String postId;
+
+    public CommunityItemBean(int avatar, String time, String name, String content, int image_content, SimpleAdapter commentAdapter, String postId) {
         this.avatar = avatar;
         this.time = time;
         this.name = name;
         this.content = content;
         this.image_content = image_content;
         this.commentAdapter = commentAdapter;
+        this.postId = postId;
     }
     public CommunityItemBean(int avatar, String time, String name, String content, SimpleAdapter commentAdapter) {
         this.avatar = avatar;
@@ -69,4 +72,9 @@ public class CommunityItemBean {
     public SimpleAdapter getCommentAdapter() {
         return commentAdapter;
     }
+
+    public String getPostId() {
+        return postId;
+    }
+
 }
