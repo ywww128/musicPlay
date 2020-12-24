@@ -9,4 +9,7 @@
     <color name="colorBackground">#EDE1E5</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="skyBlue">#2196F3</color>
+    <color name="grayBorder">#AA858181</color>
+    <color name="paleGray">#AAD5D4D4</color>
+    <color name="deepRed">#C12222</color>
 </resources>
