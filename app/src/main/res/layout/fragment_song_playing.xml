@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/song_playing_background15">
+    android:background="@drawable/song_playing_background_sky">
 
     <com.xuexiang.xui.widget.actionbar.TitleBar
         android:id="@+id/title_bar_return"
@@ -43,7 +43,7 @@
             app:lrcAnimationDuration="1000"
             app:lrcCurrentTextColor="@color/xui_config_color_edittext_error_text"
             app:lrcDividerHeight="24dp"
-            app:lrcNormalTextColor="@color/xui_config_color_edittext_stroke"
+            app:lrcNormalTextColor="@color/xui_config_color_gray_6"
             app:lrcPadding="40dp"
             app:lrcTextSize="@dimen/lrc_text_size"
             app:lrcTimelineColor="@color/xui_config_color_white"

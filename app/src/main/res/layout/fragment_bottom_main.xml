@@ -36,8 +36,11 @@
         <ImageView
             android:id="@+id/image_main_tab2"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:src="@drawable/music_logo2"/>
+            android:layout_height="26dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+
+            android:src="@drawable/logo_me_2"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
@@ -70,8 +73,10 @@
         <ImageView
             android:id="@+id/image_main_tab3"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:src="@drawable/community_logo2"/>
+            android:layout_height="26dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:src="@drawable/logo_community_1"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
