@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.musicplayer">
-    <!-- 播放器应用需要防止屏幕变暗或处理器进入休眠状态 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- 访问网络，网络定位需要上网 -->
+    <!-- 播放器应用需要防止屏幕变暗或处理器进入休眠状态 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 访问网络，网络定位需要上网 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -25,7 +24,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="q">
-
+        <service
+            android:name=".service.MusicPlayingService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.NotificationService"
+            android:enabled="true"
+            android:exported="true" />
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
