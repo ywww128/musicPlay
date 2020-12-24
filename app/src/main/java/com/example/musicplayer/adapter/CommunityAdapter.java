@@ -155,15 +155,15 @@ public class CommunityAdapter extends BaseAdapter implements OnClickListener {
      * @return 已经点击返回true，否则返回false
      */
     private boolean isLike(String position){
-        for(int i = 0; i < DataUtil.like_situation.size(); i++){
-            String[] likes = DataUtil.like_situation.get(i).split(" ");
-            if(position.equals(likes[0])) {
-                List<String> users = Arrays.asList(likes[1].split(","));
-                if(users.contains("zicai")) {
-                    return true;
-                }
-            }
-        }
+//        for(int i = 0; i < DataUtil.like_situation.size(); i++){
+//            String[] likes = DataUtil.like_situation.get(i).split(" ");
+//            if(position.equals(likes[0])) {
+//                List<String> users = Arrays.asList(likes[1].split(","));
+//                if(users.contains("zicai")) {
+//                    return true;
+//                }
+//            }
+//        }
         return false;
     }
 

@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +26,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
+import com.example.musicplayer.bean.PlaySongData;
+import com.example.musicplayer.volley.UserLoginCheck;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
+import java.util.Set;
 
 import java.util.Objects;
 
@@ -65,6 +75,11 @@ public class BottomMainFragment extends Fragment {
     private FragmentManager fManager;
     private int position = 1;
 
+    /**
+     * 用户信息
+     */
+    private JSONObject msg = null;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,6 +88,7 @@ public class BottomMainFragment extends Fragment {
         fManager = mainActivity.getManager();
         initView();
         initListener();
+        initLogin();
         setMainTabClick(1);
 
         // 动态注册广播接收器
@@ -109,29 +125,37 @@ public class BottomMainFragment extends Fragment {
         mainTab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position = 1;
-                setMainTabClick(position);
+                if(position != 1){
+                    position = 1;
+                    setMainTabClick(position);
+                }
             }
         });
         mainTab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position = 2;
-                setMainTabClick(position);
+                if(position != 2){
+                    position = 2;
+                    setMainTabClick(position);
+                }
             }
         });
         mainTab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position = 3;
-                setMainTabClick(position);
+                if(position != 3){
+                    position = 3;
+                    setMainTabClick(position);
+                }
             }
         });
         mainTab4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position = 4;
-                setMainTabClick(position);
+                if(position != 4){
+                    position = 4;
+                    setMainTabClick(position);
+                }
             }
         });
         // 进入播放界面监听器
@@ -181,7 +205,7 @@ public class BottomMainFragment extends Fragment {
                 // 跳转到社区主界面
                 imageMainTab3.setImageResource(R.drawable.logo_community_2);
                 if(communityFragment == null) {
-                    communityFragment = CommunityFragment.newInstance("zicai");
+                    communityFragment = CommunityFragment.newInstance("102");
                     fTransaction.add(R.id.content_panel, communityFragment, "cf").commit();
                 }else{
                     fTransaction.show(communityFragment).commit();
@@ -193,6 +217,12 @@ public class BottomMainFragment extends Fragment {
                 imageMainTab4.setImageResource(R.drawable.community_logo1);
                 if(myAccountFragment == null){
                     myAccountFragment = new MyAccountFragment();
+                    if(msg != null){
+                        // 将用户信息传给账户界面
+                        Bundle bundle = new Bundle();
+                        bundle.putString("msg", String.valueOf(msg));
+                        myAccountFragment.setArguments(bundle);
+                    }
                     fTransaction.add(R.id.content_panel,myAccountFragment).commit();
                 } else {
                     fTransaction.show(myAccountFragment).commit();
@@ -256,6 +286,47 @@ public class BottomMainFragment extends Fragment {
                 }
 
             }
+        }
+    }
+
+    /**
+     * 自动登录操作
+     */
+    private void initLogin(){
+        SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("user", Context.MODE_PRIVATE);
+        Map<String,String> map = (Map<String, String>) sharedPreferences.getAll();
+        Set<String> set = map.keySet();
+        for(String k : set){
+            String value = map.get(k);
+            try {
+                JSONObject jsonObject = new JSONObject(value);
+                // 自动登录
+                if(jsonObject.getBoolean("isLogin")){
+                    UserLoginCheck userLoginCheck = new UserLoginCheck(mainActivity,BottomMainFragment.this,
+                            jsonObject.getString("id"),jsonObject.getString("password"));
+                    userLoginCheck.checkUser();
+                    break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 服务器响应后的处理
+     * @param msg
+     */
+    public void dealLoginResult(JSONObject msg){
+        String errorMessage = null;
+        try {
+            errorMessage = msg.getString("errorMessage");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(errorMessage == null){
+            Log.d("TEST",String.valueOf(msg));
+            this.msg = msg;
         }
     }
 }

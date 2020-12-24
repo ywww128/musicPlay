@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.musicplayer.R;
 import com.example.musicplayer.activity.MainActivity;
+import com.example.musicplayer.volley.UserLoginCheck;
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton;
 
 import org.json.JSONException;
@@ -34,21 +35,55 @@ public class MyAccountFragment extends Fragment {
     private static final String LOGIN_BUTTON_TEXT = "登录";
     private static final String LOGOUT_BUTTON_TEXT = "退出登录";
     private TextView loginTextView;
-    private RoundButton loginButton;
+    private RoundButton logoutButton;
     private MainActivity mainActivity;
     private FragmentManager fManager;
     private LoginFragment loginFragment;
-    private String username;
+    /**
+     * 用来判断是否要进行自动登录操作
+     */
+    private String id = null;
+    private boolean isLogin = false;
+    private String msgString = null;
+    private JSONObject msg;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_my_account,null);
-        loginTextView = view.findViewById(R.id.login_text_view);
-        loginButton = view.findViewById(R.id.my_account_login_button);
-        mainActivity = (MainActivity) getActivity();
-        fManager = mainActivity.getManager();
-        initListener();
-        initLogin();
+        if(view == null){
+            view = inflater.inflate(R.layout.fragment_my_account,null);
+            loginTextView = view.findViewById(R.id.login_text_view);
+            logoutButton = view.findViewById(R.id.my_account_logout_button);
+            logoutButton.setVisibility(View.GONE);
+            mainActivity = (MainActivity) getActivity();
+            fManager = mainActivity.getManager();
+            initListener();
+        }
+        // 自动登录或登陆界面传的bundle
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            // 自动登录或登陆界面登录成功
+            msgString = bundle.getString("msg");
+            try {
+                msg = new JSONObject(msgString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // 已经退出登录或者自动登录失败
+            msgString = null;
+        }
+        // 登录信息展示在页面,已经展示便不再展示
+        if(msgString != null && !isLogin){
+            try {
+                changeToLogin(msg.getString("userName"));
+                id = msg.getString("userId");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            isLogin = true;
+            loginTextView.setEnabled(false);
+        }
         return view;
     }
 
@@ -63,60 +98,47 @@ public class MyAccountFragment extends Fragment {
                 FragmentTransaction fTransaction = fManager.beginTransaction();
                 mainActivity.hideTopView(fTransaction);
                 mainActivity.hideBottomView(fTransaction);
-                loginFragment = new LoginFragment();
+                loginFragment = new LoginFragment(MyAccountFragment.this);
                 fTransaction.replace(R.id.content_panel,loginFragment).addToBackStack(null).commit();
             }
         });
 
         // 登录/退出登录按钮监听
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 判断当前状态为登录还是非登录
-                if(LOGIN_BUTTON_TEXT.equals(loginButton.getText())){
-                    loginTextView.performClick();
-                } else {
-                    SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("user",Context.MODE_PRIVATE);
-                    String value = sharedPreferences.getString(username,"");
-                    // 退出登录操作
-                    if(!value.equals("")){
-                        try {
-                            JSONObject jsonObject = new JSONObject(value);
-                            jsonObject.put("isLogin",false);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(username,String.valueOf(jsonObject));
-                            editor.commit();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("user",Context.MODE_PRIVATE);
+                String value = null;
+                // 获取要退出登录用户在SharePreferences里的信息
+                value = sharedPreferences.getString(id,"");
+                // 退出登录操作(将sharePreferences里的isLogin置为false,重启就不会自动登录)
+                if(!"".equals(value)){
+                    try {
+                        JSONObject jsonObject = new JSONObject(value);
+                        jsonObject.put("isLogin",false);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(id,String.valueOf(jsonObject));
+                        editor.apply();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    loginButton.setText(LOGIN_BUTTON_TEXT);
-                    loginTextView.setText("还未登录，点击登录");
                 }
+                loginTextView.setText("还未登录，点击登录");
+                isLogin = false;
+                MyAccountFragment.this.setArguments(null);
+                loginTextView.setEnabled(true);
+                logoutButton.setVisibility(View.GONE);
             }
         });
     }
 
     /**
-     * 初始化登录(暂用，后续需要服务器验证)
+     * 登录成功后对展示信息进行修改
+     * @param username
      */
-    private void initLogin(){
-        SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("user", Context.MODE_PRIVATE);
-        Map<String,String> map = (Map<String, String>) sharedPreferences.getAll();
-        Set<String> set = map.keySet();
-        for(String k : set){
-            String value = map.get(k);
-            try {
-                JSONObject jsonObject = new JSONObject(value);
-                if(jsonObject.getBoolean("isLogin")){
-                    username = k;
-                    loginTextView.setText(username);
-                    loginButton.setText(LOGOUT_BUTTON_TEXT);
-                    break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+    public void changeToLogin(String username){
+        loginTextView.setText(username);
+        logoutButton.setVisibility(View.VISIBLE);
     }
+
 }

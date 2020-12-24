@@ -59,6 +59,7 @@ public class SongWordsObtain extends Application {
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
+                // 下列为进入播放界面操作
                 Log.i("test", context.toString());
                 FragmentTransaction fTransaction = mainActivity.getManager().beginTransaction();
                 mainActivity.getTopMainFragment().hideSearchResultFragment(fTransaction);

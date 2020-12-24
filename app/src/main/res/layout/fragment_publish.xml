@@ -53,4 +53,8 @@
         app:mlet_contentPadding="10dp"
         app:mlet_contentTextSize="18sp"
         app:mlet_contentViewHeight="280dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/publish_images"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>
