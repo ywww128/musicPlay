@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -54,13 +55,14 @@ import java.util.Map;
  */
 public class PublishFragment extends Fragment implements PictureSelectAdapter.OnAddViewClickListen {
     private static final String USERNAME = "username";
-
+    private static final String USERID = "userId";
     private RecyclerView recyclerView;
     private PictureSelectAdapter adapter;
     private TitleBar titleBar;
     private MultiLineEditText editText;
 
     private String username;
+    private String userId;
     private List<LocalMedia> images = new ArrayList<>();
 
     public PublishFragment() {
@@ -68,10 +70,11 @@ public class PublishFragment extends Fragment implements PictureSelectAdapter.On
     }
 
 
-    public static PublishFragment newInstance(String username){
+    public static PublishFragment newInstance(String username, String userId){
         PublishFragment publishFragment = new PublishFragment();
         Bundle args = new Bundle();
         args.putString(USERNAME, username);
+        args.putString(USERID, userId);
         publishFragment.setArguments(args);
         return publishFragment;
     }
@@ -81,6 +84,7 @@ public class PublishFragment extends Fragment implements PictureSelectAdapter.On
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
             username = getArguments().getString(USERNAME);
+            userId = getArguments().getString(USERID);
         }
     }
 
@@ -101,6 +105,9 @@ public class PublishFragment extends Fragment implements PictureSelectAdapter.On
         titleBar = view.findViewById(R.id.tb_publish);
         editText = view.findViewById(R.id.publish_text);
         editText.setContentText(null);
+        TextView tv_username = view.findViewById(R.id.username);
+        tv_username.setText(username);
+
         //初始化RecyclerView，设置布局设置适配器
         recyclerView = view.findViewById(R.id.publish_images);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3
@@ -115,7 +122,7 @@ public class PublishFragment extends Fragment implements PictureSelectAdapter.On
             public void onClick(View v) {
                 PublishFragment publishFragment = (PublishFragment) getActivity().getSupportFragmentManager().findFragmentByTag("pf");
                 CommunityFragment communityFragment = (CommunityFragment) getActivity().getSupportFragmentManager().findFragmentByTag("cf");
-                //communityFragment.initData();
+
                 getActivity().getSupportFragmentManager().beginTransaction().hide(publishFragment).commit();
                 getActivity().getSupportFragmentManager().beginTransaction().show(communityFragment).commit();
                 Toast.makeText(getActivity(), "点击了返回按钮", Toast.LENGTH_SHORT).show();
@@ -135,7 +142,9 @@ public class PublishFragment extends Fragment implements PictureSelectAdapter.On
                     writeSituation(info);
                     PublishFragment publishFragment = (PublishFragment) getActivity().getSupportFragmentManager().findFragmentByTag("pf");
                     CommunityFragment communityFragment = (CommunityFragment) getActivity().getSupportFragmentManager().findFragmentByTag("cf");
-                    communityFragment.initData();
+
+                    communityFragment.loading();
+                    communityFragment.getComments();
                     getActivity().getSupportFragmentManager().beginTransaction().hide(publishFragment).commit();
                     getActivity().getSupportFragmentManager().beginTransaction().show(communityFragment).commit();
                 }
@@ -149,7 +158,7 @@ public class PublishFragment extends Fragment implements PictureSelectAdapter.On
     private void writeSituation(String content){
         Date now = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Post post = new Post(null, 0, df.format(now), "102", content, null);
+        Post post = new Post(null, 0, df.format(now), userId, content, null);
         Log.i("PublishFragment", post.toString());
         String url = "http://10.0.2.2:8080/post/insert";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url

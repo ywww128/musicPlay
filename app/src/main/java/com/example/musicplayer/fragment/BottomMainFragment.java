@@ -134,7 +134,7 @@ public class BottomMainFragment extends Fragment {
                 // 跳转到社区主界面
                 imageMainTab3.setImageResource(R.drawable.community_logo1);
                 if(communityFragment == null) {
-                    communityFragment = CommunityFragment.newInstance("zicai");
+                    communityFragment = CommunityFragment.newInstance("102");
                     fTransaction.add(R.id.content_panel, communityFragment, "cf").commit();
                 }else{
                     fTransaction.show(communityFragment).commit();
