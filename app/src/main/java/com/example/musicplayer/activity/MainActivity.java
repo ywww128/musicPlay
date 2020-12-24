@@ -20,6 +20,7 @@ import com.example.musicplayer.R;
 import com.example.musicplayer.fragment.BottomMainFragment;
 import com.example.musicplayer.fragment.SongPlayingFragment;
 import com.example.musicplayer.fragment.TopMainFragment;
+import com.example.musicplayer.volley.UserLoginCheck;
 
 /**
  * @author ywww
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_top_main,topMainFragment);
         fragmentTransaction.add(R.id.fragment_bottom_main,bottomMainFragment).commit();
+
+        /**
+         * 测试区域
+         */
     }
 
     public void hideTopView(FragmentTransaction fragmentTransaction){

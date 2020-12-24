@@ -32,6 +32,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.xuexiang.xui.adapter.simple.XUISimpleAdapter;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.button.shinebutton.ShineButton;
+import com.xuexiang.xui.widget.popupwindow.bar.CookieBar;
 import com.xuexiang.xui.widget.popupwindow.popup.XUIListPopup;
 import com.xuexiang.xui.widget.popupwindow.popup.XUIPopup;
 
@@ -205,7 +206,11 @@ public class SongPlayingFragment extends Fragment {
                 case R.id.shine_button_love:    // 喜欢
                     break;
                 case R.id.iv_download:          // 下载
-                    DownloadUtils.downloadMusicToFile(currentSong.getUrl(), currentSong, getContext());
+                    DownloadUtils.downloadMusicToFile(currentSong.getUrl(), currentSong, getContext(), getActivity());
+                    CookieBar.builder(getActivity())
+                            .setTitle("下载提示")
+                            .setMessage("歌曲“" + currentSong.getName() + "”已经下载完成！")
+                            .show();
                     System.out.println("download");
                     break;
                 case R.id.iv_dialogue:          // 评论

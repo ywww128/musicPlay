@@ -9,6 +9,11 @@
         android:id="@+id/top_search_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <!--recyclerview位置，动态加入-->
+    <!--recyclerview位置或者wait位置-->
+    <FrameLayout
+        android:id="@+id/show_songs_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>

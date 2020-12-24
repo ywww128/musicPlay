@@ -46,11 +46,14 @@ public class MyMusicFragment extends Fragment {
 
     private void initView(){
         Log.i("size", String.valueOf(songList.size()));
+        // 对recyclerView初始化
         RecyclerView recyclerView = view.findViewById(R.id.my_music_recyclerview);
+        // 设置适配器
         MyMusicAdapter myMusicAdapter = new MyMusicAdapter(songList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(myMusicAdapter);
+        // 设置歌曲的监听器
         myMusicAdapter.setItemClickListener(new MyMusicAdapter.OnItemClickListener() {
             @Override
             public void onSongClick(View view, int position) {
@@ -80,5 +83,17 @@ public class MyMusicFragment extends Fragment {
 
             }
         });
+    }
+
+    /**
+     * 实现下载后及时显示在列表
+     * @param hidden
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if(!hidden){
+            songList = SongResourceUtils.getSongList(getContext());
+            initView();
+        }
     }
 }

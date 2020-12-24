@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.example.musicplayer.volley.SongsMessageObtain;
  */
 public class TopSearchFragment extends Fragment {
     private View view;
+    private LinearLayout searchLayout;
     private Button searchButton;
     private EditText searchEditView;
     private ImageView backView;
@@ -38,11 +40,12 @@ public class TopSearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        view = inflater.inflate(R.layout.fragment_top_search,null);
+       searchLayout = view.findViewById(R.id.top_search_layout);
        searchButton = view.findViewById(R.id.top_search_button);
        searchEditView = view.findViewById(R.id.top_search_edit);
        backView = view.findViewById(R.id.search_back_view);
        mainActivity = (MainActivity) getActivity();
-       Log.d("TAA","2");
+       // 首次创建获取值
        Bundle bundle = getArguments();
        String keywords = bundle.getString("keywords");
        searchEditView.setText(keywords);
@@ -50,6 +53,7 @@ public class TopSearchFragment extends Fragment {
        return view;
     }
     public void initView(){
+        // 返回监听器
         backView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +70,7 @@ public class TopSearchFragment extends Fragment {
                 return false;
             }
         });
+        // 搜索按钮监听器
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,17 +85,39 @@ public class TopSearchFragment extends Fragment {
             Toast.makeText(mainActivity,"歌曲名不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
-        // 隐藏键盘
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        // 搜索后隐藏键盘
+        hideSoftInput();
+        // 搜索后去除搜索框焦点
+        clearEditFocus();
 
+        // 显示等待界面
+        mainActivity.getTopMainFragment().getSearchResultFragment().beginWait();
         // 进行歌曲信息获取操作
         songsMessageObtain = new SongsMessageObtain(mainActivity,
                 mainActivity.getTopMainFragment().getSearchResultFragment(),keywords);
         songsMessageObtain.startGetJson();
     }
 
+    /**
+     * 非首次进入传值
+     * @param keywords
+     */
     public void changeEditViewText(String keywords){
         this.searchEditView.setText(keywords);
+    }
+
+    public String getText(){
+        return String.valueOf(searchEditView.getText());
+    }
+
+
+    public void hideSoftInput(){
+        // 隐藏键盘
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+    }
+
+    public void clearEditFocus(){
+        searchEditView.clearFocus();
     }
 }

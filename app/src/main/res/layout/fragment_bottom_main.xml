@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="right"
     android:orientation="horizontal"
     android:background="@color/xui_config_color_main_theme">
     <LinearLayout
         android:id="@+id/main_tab1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:onClick="setMainTabClick"
@@ -26,7 +27,7 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/main_tab2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:onClick="setMainTabClick"
@@ -44,8 +45,23 @@
             android:textSize="14dp"/>
     </LinearLayout>
     <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal">
+        <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/index_to_playing_image"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            app:riv_is_circle="true"
+            android:clickable="true"
+            android:rotation="30"
+            android:src="@drawable/song_playing_phonograph"/>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/main_tab3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:onClick="setMainTabClick"
@@ -64,7 +80,7 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/main_tab4"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:onClick="setMainTabClick"

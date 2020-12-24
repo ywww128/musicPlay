@@ -14,7 +14,7 @@ public class Artist implements Serializable {
     public String picUrl;
     public ArrayList<String> alias;
     public int albumSIze;
-    public int picId;
+    public long picId;
     public String img1v1Url;
     public int img1v1;
     public String trans;

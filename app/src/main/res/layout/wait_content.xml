@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/wait_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!--用来刷新-->
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@color/defaultTextColor" />
+    <com.xuexiang.xui.widget.imageview.RadiusImageView
+        android:id="@+id/wait_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        app:riv_is_circle="true"
+        android:src="@drawable/loading" />
 </FrameLayout>
