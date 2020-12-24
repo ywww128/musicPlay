@@ -368,7 +368,7 @@ public class MusicPlayingService extends Service {
             // 通道和管理器相连接（建立关系），可以协同运行
             notificationManager.createNotificationChannel(mChannel);
             notification = new Notification.Builder(this, id)
-                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.pic_video_icon))
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.pic_icon_audio))
                     .setSmallIcon(R.drawable.pic_icon_audio)
                     .setContent(remoteView)
                     .setWhen(System.currentTimeMillis())
@@ -376,7 +376,7 @@ public class MusicPlayingService extends Service {
                     .build();
         } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notification = new Notification.Builder(this)
-                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.pic_video_icon))
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.pic_icon_audio))
                     .setSmallIcon(R.drawable.pic_icon_audio)
                     .setContent(remoteView)
                     .setWhen(System.currentTimeMillis())
