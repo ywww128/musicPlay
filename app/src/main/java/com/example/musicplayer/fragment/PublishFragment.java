@@ -160,7 +160,7 @@ public class PublishFragment extends Fragment implements PictureSelectAdapter.On
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Post post = new Post(null, 0, df.format(now), userId, content, null);
         Log.i("PublishFragment", post.toString());
-        String url = "http://10.0.2.2:8080/post/insert";
+        String url = "http://116.62.109.242:9988/post/insert";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url
                                 , new NormalResponseListener(), new NormalErrorListener()){
             @Override

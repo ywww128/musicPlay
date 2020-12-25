@@ -278,7 +278,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         Comment comment = new Comment(null, "102", content, postId,df.format(new Date()));
         Gson gson = new Gson();
         String info = gson.toJson(comment);
-        String url = "http://10.0.2.2:8080/comment/insert";
+        String url = "http://116.62.109.242:9988/comment/insert";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new NormalResponseListener()
                                                         , new NormalErrorListener())
         {
@@ -339,7 +339,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
             }
         };
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://10.0.2.2:8080/post/findAll"
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://116.62.109.242:9988/post/findAll"
                 , getAllPostListener, errorListener){
             //修改编码格式，防止出现乱码
             @Override
@@ -358,7 +358,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
     }
 
     public void getComments() {
-        String commentUrl = "http://10.0.2.2:8080/comment/findAll";
+        String commentUrl = "http://116.62.109.242:9988/comment/findAll";
         StringRequest commentRequest = new StringRequest(Request.Method.POST, commentUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -390,7 +390,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         requestQueue.add(commentRequest);
     }
     private void getUsers() {
-        String commentUrl = "http://10.0.2.2:8080/user/findAll";
+        String commentUrl = "http://116.62.109.242:9988/user/findAll";
         StringRequest commentRequest = new StringRequest(Request.Method.POST, commentUrl,
                 new Response.Listener<String>() {
                     @Override
