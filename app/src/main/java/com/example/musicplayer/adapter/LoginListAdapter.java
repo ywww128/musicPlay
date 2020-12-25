@@ -19,6 +19,7 @@ import java.util.zip.Inflater;
  */
 public class LoginListAdapter extends RecyclerView.Adapter<LoginListAdapter.MyHolder> {
     List<String> ids;
+    private  OnItemClickListener onItemClickListener;
     public LoginListAdapter(List<String> ids){
         this.ids = ids;
     }
@@ -26,7 +27,7 @@ public class LoginListAdapter extends RecyclerView.Adapter<LoginListAdapter.MyHo
     @Override
     public LoginListAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.login_history_item,parent,false);
-        return new MyHolder(view);
+        return new MyHolder(view,onItemClickListener);
     }
 
     @Override
@@ -42,11 +43,32 @@ public class LoginListAdapter extends RecyclerView.Adapter<LoginListAdapter.MyHo
         return 0;
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder{
+    public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView idView;
-        public MyHolder(@NonNull View itemView) {
+        private OnItemClickListener onItemClickListener;
+        public MyHolder(@NonNull View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
+            this.onItemClickListener = onItemClickListener;
             idView = itemView.findViewById(R.id.user_id_history);
+            idView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.setOnClick(v,getLayoutPosition());
+        }
+    }
+
+    public interface OnItemClickListener {
+        /**
+         * item点击事件
+         * @param view
+         * @param position
+         */
+        public void setOnClick(View view,int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
     }
 }

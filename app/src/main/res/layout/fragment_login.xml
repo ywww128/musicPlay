@@ -35,14 +35,25 @@
         android:layout_width="match_parent"
         android:layout_height="0.05dp"
         android:background="@drawable/item_bottom_border"/>
-    <EditText
-        android:id="@+id/id_login_text"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:hint="账号"
-        android:textSize="20dp"
-        android:textCursorDrawable="@drawable/input_cursor_color"
-        android:background="@color/colorWhite" />
+        android:layout_height="70dp">
+        <EditText
+            android:id="@+id/id_login_text"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="账号"
+            android:textSize="20dp"
+            android:textCursorDrawable="@drawable/input_cursor_color"
+            android:background="@color/colorWhite" />
+        <ImageView
+            android:id="@+id/show_history_id_button"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/pull_down_logo"
+            android:layout_gravity="right|center_vertical"/>
+    </FrameLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.05dp"
