@@ -35,7 +35,7 @@ import java.util.Map;
 public class UserLoginCheck extends Application {
     private RequestQueue mQueue;
     private Context context;
-    private final String url = "http://10.0.2.2:9988/user/login";
+    private final String url = "http://116.62.109.242:9988/user/login";
     private Fragment fragment;
     private String id;
     private String password;
