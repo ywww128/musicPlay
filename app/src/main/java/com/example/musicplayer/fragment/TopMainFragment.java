@@ -62,7 +62,7 @@ public class TopMainFragment extends Fragment{
         searchEdit.setOnKeyListener(new View.OnKeyListener(){
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(KeyEvent.KEYCODE_ENTER == keyCode){
+                if(KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN){
                     click();
                 }
                 return false;
@@ -86,7 +86,7 @@ public class TopMainFragment extends Fragment{
 
     private void click() {
         String keywords = searchEdit.getText().toString();
-        if(keywords.equals("")){
+        if("".equals(keywords)){
             Toast.makeText(mainActivity,"歌曲名不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
