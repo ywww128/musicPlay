@@ -116,6 +116,8 @@ public class BottomMainFragment extends Fragment {
         playMusicAnim.setRepeatCount(-1);
         // 旋转不卡顿
         playMusicAnim.setInterpolator(new LinearInterpolator());
+        playMusicAnim.start();
+        playMusicAnim.pause();
     }
 
     /**
@@ -260,7 +262,7 @@ public class BottomMainFragment extends Fragment {
 
     public void changePlayMusicAnim(boolean isPlaying){
         if(isPlaying){
-            playMusicAnim.start();
+            playMusicAnim.resume();
         } else {
             playMusicAnim.pause();
         }

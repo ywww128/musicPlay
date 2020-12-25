@@ -70,10 +70,10 @@
 
             <ImageView
                 android:id="@+id/iv_play_song"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:src="@drawable/song_playing_play" />
+                android:src="@drawable/notification_suspend" />
 
             <ImageView
                 android:id="@+id/iv_next_song"

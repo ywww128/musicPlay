@@ -40,7 +40,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class MusicPlayingService extends Service {
     private final static int ZERO = 0;
-    private final static int THOUSAND = 1000;
+    private final static String INDEX_PRE_SONG = "1";
+    private final static String INDEX_PLAY_SONG = "2";
+    private final static String INDEX_NEXT_SONG = "3";
 
     private static MediaPlayer player = new MediaPlayer();
     private final IBinder iBinder = new MyBinder();
@@ -262,9 +264,9 @@ public class MusicPlayingService extends Service {
             // 更新通知栏信息
             if(notificationManager != null && notification != null) {
                 if(player.isPlaying()) {
-                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.song_playing_suspend);
+                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.notification_play);
                 } else {
-                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.song_playing_play);
+                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.notification_suspend);
                 }
                 if(currentSong != null) {
                     remoteView.setTextViewText(R.id.tv_notification_title, currentSong.getName());
@@ -301,19 +303,19 @@ public class MusicPlayingService extends Service {
             buttonIndex = intent.getStringExtra("buttonIndex");
         }
         if(buttonIndex != null) {
-            if("1".equals(buttonIndex)) {
+            if(INDEX_PRE_SONG.equals(buttonIndex)) {
                 Log.i("onStartCommand", "pre...");
                 playPreSong();
                 if(currentSong != null) {
                     remoteView.setTextViewText(R.id.tv_notification_title, currentSong.getName());
                     remoteView.setTextViewText(R.id.tv_notification_artists, SongPlayingUtils.connectSingerNameWithAndSymbol(currentSong.getArtists()));
                 }
-            } else if("2".equals(buttonIndex)) {
+            } else if(INDEX_PLAY_SONG.equals(buttonIndex)) {
                 Log.i("onStartCommand", "play...");
                 if(startOrPauseMusic() == 1) {
-                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.song_playing_suspend);
+                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.notification_play);
                 } else {
-                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.song_playing_play);
+                    remoteView.setImageViewResource(R.id.iv_play_song, R.drawable.notification_suspend);
                 }
             } else {
                 Log.i("onStartCommand", "next...");
@@ -343,15 +345,15 @@ public class MusicPlayingService extends Service {
         }
 
         Intent actionIntent = new Intent(this, MusicPlayingService.class);
-        actionIntent.putExtra("buttonIndex", "1");
+        actionIntent.putExtra("buttonIndex", INDEX_PRE_SONG);
         PendingIntent pendingIntentPreSong = PendingIntent.getService(this, 2, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteView.setOnClickPendingIntent(R.id.iv_pre_song, pendingIntentPreSong);
 
-        actionIntent.putExtra("buttonIndex", "2");
+        actionIntent.putExtra("buttonIndex", INDEX_PLAY_SONG);
         PendingIntent pendingIntentPlaySong = PendingIntent.getService(this, 3, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteView.setOnClickPendingIntent(R.id.iv_play_song, pendingIntentPlaySong);
 
-        actionIntent.putExtra("buttonIndex", "3");
+        actionIntent.putExtra("buttonIndex", INDEX_NEXT_SONG);
         PendingIntent pendingIntentNextSong = PendingIntent.getService(this, 1, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteView.setOnClickPendingIntent(R.id.iv_next_song, pendingIntentNextSong);
 
