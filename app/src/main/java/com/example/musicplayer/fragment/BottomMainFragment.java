@@ -207,7 +207,15 @@ public class BottomMainFragment extends Fragment {
                 // 跳转到社区主界面
                 imageMainTab3.setImageResource(R.drawable.logo_community_2);
                 if(communityFragment == null) {
-                    communityFragment = CommunityFragment.newInstance("102");
+                    try {
+                        if(msg == null){
+                            communityFragment = CommunityFragment.newInstance(null);
+                        }else{
+                            communityFragment = CommunityFragment.newInstance(String.valueOf(msg.getInt("userId")));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     fTransaction.add(R.id.content_panel, communityFragment, "cf").commit();
                 }else{
                     fTransaction.show(communityFragment).commit();
@@ -330,5 +338,8 @@ public class BottomMainFragment extends Fragment {
             Log.d("TEST",String.valueOf(msg));
             this.msg = msg;
         }
+    }
+    public void setMsg(JSONObject msg){
+        this.msg = msg;
     }
 }

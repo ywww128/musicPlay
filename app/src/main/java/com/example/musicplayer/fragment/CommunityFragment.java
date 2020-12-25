@@ -169,7 +169,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username.equals("") || username == null) {
+                if("".equals(username) || username == null) {
                     SnackbarUtils.Short(v, "您还未登陆，请先登陆").gravityFrameLayout(Gravity.TOP)
                             .messageCenter().warning().show();
                 }

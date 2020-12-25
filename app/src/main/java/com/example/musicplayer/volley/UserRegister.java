@@ -30,7 +30,7 @@ public class UserRegister extends Application {
     private Fragment fragment;
     private JSONObject msg;
     private RequestQueue mQueue;
-    private String url = "http://10.0.2.2:9988/user/insert";
+    private String url = "http://116.62.109.242:9988/user/insert";
     public UserRegister(Context context, Fragment fragment, JSONObject msg){
         this.context = context;
         this.fragment = fragment;
