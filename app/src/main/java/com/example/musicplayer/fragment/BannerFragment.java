@@ -48,7 +48,7 @@ public class BannerFragment extends Fragment implements OnBannerListener {
         //放标题的集合
         listTitle = new ArrayList<>();
 
-        listPath.add("http://116.62.109.242/img/banner1.jpg");
+        listPath.add("http://116.62.109.242/img/banner1.png");
         listPath.add("http://116.62.109.242/img/banner2.jpg");
         listPath.add("http://116.62.109.242/img/banner3.jpg");
         listPath.add("http://116.62.109.242/img/banner4.jpg");

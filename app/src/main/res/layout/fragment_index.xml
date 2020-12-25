@@ -15,7 +15,7 @@
             <fragment
                 android:id="@+id/banner_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:layout_margin="10dp"
                 android:name="com.example.musicplayer.fragment.BannerFragment"/>
             <LinearLayout
