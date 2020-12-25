@@ -202,8 +202,13 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
 
                 break;
             case "comment":
-                showInputDialog(tags[0]);
-                Log.i("Community-comment","position:"+tags[0]);
+                if("".equals(username) || username == null) {
+                    SnackbarUtils.Short(v, "您还未登陆，请先登陆").gravityFrameLayout(Gravity.TOP)
+                            .messageCenter().warning().show();
+                }else {
+                    showInputDialog(tags[0]);
+                    Log.i("Community-comment", "position:" + tags[0]);
+                }
                 break;
             default:
                 break;
@@ -275,7 +280,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         CommunityItemBean item = list.get(index);
         String postId = item.getPostId();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Comment comment = new Comment(null, "102", content, postId,df.format(new Date()));
+        Comment comment = new Comment(null, users.get(username), content, postId,df.format(new Date()));
         Gson gson = new Gson();
         String info = gson.toJson(comment);
         String url = "http://116.62.109.242:9988/comment/insert";

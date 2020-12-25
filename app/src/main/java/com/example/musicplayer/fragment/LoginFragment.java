@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment {
     private FragmentManager fManager;
     private View recyclerViewContent;
     private RecyclerView recyclerView;
-    private PopupWindow popupWindow;
+    private PopupWindow popupWindow = null;
     private ImageView showHistoryIdButton;
     private String id;
     private String password;
@@ -90,7 +90,11 @@ public class LoginFragment extends Fragment {
         showHistoryIdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopWindow();
+                if(popupWindow != null && popupWindow.isShowing()){
+                    popupWindow.dismiss();
+                } else {
+                    showPopWindow();
+                }
             }
         });
         // 退出登录界面监听
