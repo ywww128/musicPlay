@@ -196,22 +196,21 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
     @Override
     public void click(View v) {
         String[] tags = ((String)v.getTag()).split(",");
-        switch (tags[1]){
-            case "like":
-                Log.i("Community-like","position:"+tags[0]);
-
-                break;
-            case "comment":
-                if("".equals(username) || username == null) {
-                    SnackbarUtils.Short(v, "您还未登陆，请先登陆").gravityFrameLayout(Gravity.TOP)
-                            .messageCenter().warning().show();
-                }else {
+        if("".equals(username) || username == null) {
+            SnackbarUtils.Short(v, "您还未登陆，请先登陆").gravityFrameLayout(Gravity.TOP)
+                    .messageCenter().warning().show();
+        }else {
+            switch (tags[1]) {
+                case "like":
+                    Log.i("Community-like", "position:" + tags[0]);
+                    break;
+                case "comment":
                     showInputDialog(tags[0]);
                     Log.i("Community-comment", "position:" + tags[0]);
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -280,7 +279,7 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
         CommunityItemBean item = list.get(index);
         String postId = item.getPostId();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Comment comment = new Comment(null, users.get(username), content, postId,df.format(new Date()));
+        Comment comment = new Comment(null, username, content, postId,df.format(new Date()));
         Gson gson = new Gson();
         String info = gson.toJson(comment);
         String url = "http://116.62.109.242:9988/comment/insert";
@@ -434,5 +433,9 @@ public class CommunityFragment extends Fragment implements OnItemClickListener, 
      */
     public void loading(){
         multipleStatusView.showLoading();
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
